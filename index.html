@@ -237,6 +237,18 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .plan-opt-row.sel .por-label{color:var(--accent);}
 .por-check{width:20px;height:20px;border-radius:50%;border:2px solid #ffffff25;display:flex;align-items:center;justify-content:center;font-size:0.7rem;transition:all var(--trans);flex-shrink:0;}
 .plan-opt-row.sel .por-check{background:var(--accent);border-color:var(--accent);color:#000;}
+/* ── VIDEO DEMO MODAL ── */
+.vdemo-overlay{position:fixed;inset:0;background:#000000ee;z-index:800;display:none;flex-direction:column;align-items:center;justify-content:flex-end;}
+.vdemo-overlay.open{display:flex;}
+.vdemo-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:500px;display:flex;flex-direction:column;overflow:hidden;}
+.vdemo-hdr{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #ffffff08;flex-shrink:0;}
+.vdemo-title{flex:1;font-size:0.9rem;font-weight:800;line-height:1.3;}
+.vdemo-close{background:transparent;border:1px solid #ffffff20;color:var(--text-dim);border-radius:var(--radius-sm);padding:7px 13px;font-size:0.8rem;font-weight:700;cursor:pointer;}
+.vdemo-frame-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000;}
+.vdemo-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.vdemo-hint{padding:10px 16px calc(10px + var(--safe-bottom));font-size:0.72rem;color:var(--text-muted);text-align:center;}
+.btn-demo{background:transparent;border:1px solid #ffffff18;color:var(--text-dim);border-radius:8px;padding:5px 9px;font-size:0.78rem;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.btn-demo:active{background:var(--surface2);}
 @media(min-width:500px){body{max-width:430px;margin:0 auto;}}
 </style>
 </head>
@@ -429,6 +441,20 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ======== VIDEO DEMO MODAL ======== -->
+<div class="vdemo-overlay" id="vdemo-overlay" onclick="closeVDemo(event)">
+  <div class="vdemo-sheet">
+    <div class="vdemo-hdr">
+      <div class="vdemo-title" id="vdemo-title">Ejercicio</div>
+      <button class="vdemo-close" onclick="closeVDemo()">✕ Cerrar</button>
+    </div>
+    <div class="vdemo-frame-wrap">
+      <iframe id="vdemo-iframe" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+    <div class="vdemo-hint">📌 Si no carga el video, revisá tu conexión a internet</div>
+  </div>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -1170,7 +1196,7 @@ function renderCard(id){
     footer='<div class="cf"><button class="btn btn-ghost" onclick="acReiniciar(\''+id+'\')">↩ Reiniciar</button></div>';
   }
   card.innerHTML=
-    '<div class="ch"><span class="ch-icon">'+ej.icono+'</span><div class="ch-info"><div class="ch-name">'+ej.nombre+'</div><div class="ch-tags"><span class="tag">'+ej.musculo+'</span><span class="tag">'+ej.reps+' reps</span><span class="tag">'+ej.descanso+'s'+restBadge(ej)+'</span></div></div>'+badge+'</div>'+
+    '<div class="ch"><span class="ch-icon">'+ej.icono+'</span><div class="ch-info"><div class="ch-name">'+ej.nombre+'</div><div class="ch-tags"><span class="tag">'+ej.musculo+'</span><span class="tag">'+ej.reps+' reps</span><span class="tag">'+ej.descanso+'s'+restBadge(ej)+'</span></div></div><button class="btn-demo" onclick="openVDemo(\''+ej.nombre+'\',\''+ej.musculo+'\')">🎬 Ver</button>'+badge+'</div>'+
     dots+wr+steppers+body+
     '<div class="notes-line"><span>💡</span><span>'+ej.notas+'</span></div>'+
     footer;
@@ -1187,6 +1213,17 @@ function buildDots(ej,st){
     h+='<div class="'+c+'">'+(done?'✓':i)+'</div>';
   }
   return h;
+}
+function openVDemo(nombre, musculo){
+  var q=encodeURIComponent('como hacer '+nombre+' gym');
+  document.getElementById('vdemo-title').textContent='🎬 '+nombre;
+  document.getElementById('vdemo-iframe').src='https://www.youtube.com/embed?listType=search&list='+q+'&autoplay=1&mute=1';
+  document.getElementById('vdemo-overlay').classList.add('open');
+}
+function closeVDemo(e){
+  if(e&&e.target!==document.getElementById('vdemo-overlay')&&e.type==='click')return;
+  document.getElementById('vdemo-overlay').classList.remove('open');
+  document.getElementById('vdemo-iframe').src='';
 }
 function updTimerOnly(id){
   var st=_est[id]; var card=document.getElementById('card-'+id); if(!card)return;
