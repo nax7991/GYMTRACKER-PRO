@@ -172,6 +172,71 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .toast{position:fixed;bottom:calc(68px + var(--safe-bottom) + 12px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface2);border:1px solid #ffffff18;border-radius:var(--radius-sm);padding:10px 20px;font-size:0.83rem;font-weight:600;color:var(--text);z-index:300;opacity:0;transition:opacity 0.22s,transform 0.22s;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px #00000055;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast-top{bottom:auto;top:calc(16px + env(safe-area-inset-top,0px));}
+/* ── ADMIN TABS ── */
+.admin-tabs{display:flex;background:var(--surface);border-bottom:1px solid #ffffff08;flex-shrink:0;}
+.admin-tab{flex:1;border:none;background:transparent;color:var(--text-dim);padding:12px 4px;font-size:0.8rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;transition:all var(--trans);}
+.admin-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+/* ── ROUTINE CARDS ── */
+.routine-card{background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.rc-icon{font-size:1.4rem;flex-shrink:0;}
+.rc-info{flex:1;}
+.rc-name{font-size:0.95rem;font-weight:700;}
+.rc-sub{font-size:0.72rem;color:var(--text-dim);margin-top:3px;}
+/* ── ROUTINE BUILDER OVERLAY ── */
+.rb-overlay{position:fixed;inset:0;background:var(--bg);z-index:600;display:none;flex-direction:column;}
+.rb-overlay.open{display:flex;}
+.rb-header{background:var(--surface);padding:14px 16px;border-bottom:1px solid #ffffff08;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.rb-back{background:transparent;border:1px solid #ffffff20;color:var(--text-dim);border-radius:var(--radius-sm);padding:8px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;}
+.rb-name-input{flex:1;background:var(--surface2);border:1px solid #ffffff15;border-radius:var(--radius-sm);color:var(--text);font-size:0.95rem;font-weight:700;padding:10px 12px;outline:none;user-select:text;}
+.rb-name-input:focus{border-color:var(--accent);}
+.rb-save-btn{background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;}
+.rb-tabs{display:flex;background:var(--surface);border-bottom:1px solid #ffffff08;flex-shrink:0;}
+.rb-tab{flex:1;border:none;background:transparent;color:var(--text-dim);padding:10px;font-size:0.8rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;transition:all var(--trans);}
+.rb-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.rb-body{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.rb-section{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
+.rb-section.hidden{display:none;}
+/* ── MUSCLE FILTER ── */
+.muscle-filter{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;flex-shrink:0;scrollbar-width:none;}
+.muscle-filter::-webkit-scrollbar{display:none;}
+.mf-btn{border:none;background:var(--surface2);color:var(--text-dim);border-radius:20px;padding:6px 12px;font-size:0.74rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:all var(--trans);flex-shrink:0;}
+.mf-btn.active{background:var(--accent);color:#000;}
+/* ── SEARCH ── */
+.rb-search{padding:8px 14px;flex-shrink:0;}
+.rb-search input{width:100%;background:var(--surface2);border:1px solid #ffffff15;border-radius:var(--radius-sm);color:var(--text);padding:9px 13px;font-size:0.9rem;outline:none;user-select:text;}
+.rb-search input:focus{border-color:var(--accent);}
+/* ── EXERCISE LIBRARY ITEMS ── */
+.ex-lib-list{flex:1;overflow-y:auto;}
+.ex-lib-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #ffffff06;cursor:pointer;}
+.ex-lib-item:active{background:var(--surface2);}
+.eli-icon{font-size:1.3rem;flex-shrink:0;}
+.eli-info{flex:1;}
+.eli-name{font-size:0.86rem;font-weight:600;}
+.eli-tags{font-size:0.68rem;color:var(--text-dim);margin-top:2px;}
+.eli-btn{width:30px;height:30px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;cursor:pointer;flex-shrink:0;transition:all var(--trans);}
+.eli-btn.add{border-color:var(--accent);color:var(--accent);background:transparent;}
+.eli-btn.added{border-color:var(--accent);background:var(--accent);color:#000;}
+/* ── SELECTED EXERCISES IN BUILDER ── */
+.rb-empty{text-align:center;padding:40px 24px;color:var(--text-muted);font-size:0.85rem;line-height:1.7;}
+.rb-ex-item{padding:12px 14px;border-bottom:1px solid #ffffff06;}
+.rei-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.rei-icon{font-size:1.2rem;}
+.rei-name{font-size:0.88rem;font-weight:700;flex:1;}
+.rei-rm{background:#2a1515;border:1px solid #ef535030;color:var(--danger);border-radius:8px;padding:5px 8px;cursor:pointer;font-size:0.75rem;font-weight:700;}
+.rei-fields{display:flex;gap:8px;flex-wrap:wrap;}
+.rei-field{display:flex;flex-direction:column;gap:3px;}
+.rei-field label{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+.rei-field input{background:var(--surface2);border:1px solid #ffffff15;border-radius:8px;color:var(--text);font-size:0.82rem;width:64px;padding:5px 7px;outline:none;user-select:text;text-align:center;}
+.rei-field input:focus{border-color:var(--accent);}
+/* ── PLAN SELECT (dynamic) ── */
+.plan-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;}
+.plan-opt-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:var(--radius-sm);border:2px solid transparent;cursor:pointer;transition:all var(--trans);}
+.plan-opt-row.sel{border-color:var(--accent);background:#003d1f44;}
+.por-icon{font-size:1.1rem;flex-shrink:0;}
+.por-label{font-size:0.85rem;font-weight:700;flex:1;color:var(--text-dim);}
+.plan-opt-row.sel .por-label{color:var(--accent);}
+.por-check{width:20px;height:20px;border-radius:50%;border:2px solid #ffffff25;display:flex;align-items:center;justify-content:center;font-size:0.7rem;transition:all var(--trans);flex-shrink:0;}
+.plan-opt-row.sel .por-check{background:var(--accent);border-color:var(--accent);color:#000;}
 @media(min-width:500px){body{max-width:430px;margin:0 auto;}}
 </style>
 </head>
@@ -234,9 +299,36 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <button class="btn btn-outline btn-sm" onclick="doLogout()">Salir</button>
     </div>
   </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" id="tab-alumnos" onclick="switchAdminTab('alumnos')">👥 Alumnos</button>
+    <button class="admin-tab" id="tab-rutinas" onclick="switchAdminTab('rutinas')">📋 Mis Rutinas</button>
+  </div>
   <div class="admin-scroll" id="admin-list"></div>
-  <div class="admin-footer">
-    <button class="btn btn-green" onclick="openModal()">+ AGREGAR ALUMNO</button>
+  <div class="admin-footer" id="admin-footer">
+    <button class="btn btn-green" id="admin-footer-btn" onclick="openModal()">+ AGREGAR ALUMNO</button>
+  </div>
+</div>
+
+<!-- ======== ROUTINE BUILDER OVERLAY ======== -->
+<div class="rb-overlay" id="rb-overlay">
+  <div class="rb-header">
+    <button class="rb-back" onclick="closeRoutineBuilder()">← Volver</button>
+    <input class="rb-name-input" id="rb-name" type="text" placeholder="Nombre de la rutina..." autocomplete="off"/>
+    <button class="rb-save-btn" onclick="saveRoutine()">GUARDAR</button>
+  </div>
+  <div class="rb-tabs">
+    <button class="rb-tab active" id="rbt-lib" onclick="switchRbTab('lib')">📚 Biblioteca (<span id="rb-lib-count">0</span>)</button>
+    <button class="rb-tab" id="rbt-sel" onclick="switchRbTab('sel')">✅ Rutina (<span id="rb-sel-count">0</span>)</button>
+  </div>
+  <div class="rb-body">
+    <div class="rb-section" id="rb-sec-lib">
+      <div class="muscle-filter" id="muscle-filter"></div>
+      <div class="rb-search"><input type="text" id="rb-search" placeholder="🔍 Buscar ejercicio..." oninput="renderExLib()" autocomplete="off"/></div>
+      <div class="ex-lib-list" id="ex-lib-list"></div>
+    </div>
+    <div class="rb-section hidden" id="rb-sec-sel">
+      <div id="rb-selected-list"></div>
+    </div>
   </div>
 </div>
 
@@ -318,12 +410,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <input class="field-input" id="modal-nombre" type="text" placeholder="Ej: Lucas" autocomplete="off"/>
     </div>
     <div class="field-group">
-      <div class="field-label">Días asignados (podés elegir varios)</div>
-      <div class="plan-grid">
-        <div class="plan-opt" data-p="empuje" onclick="selOpt(this)"><span class="poi">🔥</span>Miércoles<br>Empuje</div>
-        <div class="plan-opt" data-p="pierna" onclick="selOpt(this)"><span class="poi">🦵</span>Jueves<br>Pierna</div>
-        <div class="plan-opt" data-p="jalon" onclick="selOpt(this)"><span class="poi">💪</span>Viernes<br>Jalón</div>
-      </div>
+      <div class="field-label">Días / Rutinas asignadas</div>
+      <div class="plan-list" id="modal-plan-list"></div>
     </div>
     <button class="btn btn-green" onclick="addAlumno()">AGREGAR</button>
     <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
@@ -404,6 +492,123 @@ var PLANES = {
   }
 };
 
+// ── EXERCISE DATABASE ──
+var EX_DB = [
+  // ── PECHO ──
+  {id:'e_p1',nombre:'Press de Banca con Barra',icono:'🏋️',musculo:'Pecho',series:3,reps:'6-8',descanso:150,tipo:'compuesto',notas:'Escapulas retraidas, barra baja al esternon'},
+  {id:'e_p2',nombre:'Press Inclinado con Barra',icono:'📐',musculo:'Pecho',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'45 grados, agarre ligeramente mas ancho que hombros'},
+  {id:'e_p3',nombre:'Press Inclinado con Mancuernas',icono:'💪',musculo:'Pecho',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Mancuernas paralelas al bajar, 45 grados'},
+  {id:'e_p4',nombre:'Press Declinado con Barra',icono:'📉',musculo:'Pecho',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Baja pecho inferior, no bloquees los codos'},
+  {id:'e_p5',nombre:'Press con Mancuernas Plano',icono:'🏋️',musculo:'Pecho',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Rango completo, mancuernas se tocan arriba'},
+  {id:'e_p6',nombre:'Aperturas con Mancuernas (Banco Plano)',icono:'🦅',musculo:'Pecho',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Brazos ligeramente doblados, baja lento'},
+  {id:'e_p7',nombre:'Aperturas con Mancuernas (Inclinado)',icono:'🦅',musculo:'Pecho',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'45 grados, estira el pecho superior'},
+  {id:'e_p8',nombre:'Aperturas en Polea Alta (Crossover)',icono:'🔗',musculo:'Pecho',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Junta las manos abajo, mantiene contraccion'},
+  {id:'e_p9',nombre:'Aperturas en Polea Baja',icono:'🔗',musculo:'Pecho',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Tira hacia arriba y al centro, pecho inferior'},
+  {id:'e_p10',nombre:'Fondos en Paralelas (Pecho)',icono:'🤸',musculo:'Pecho',series:3,reps:'8-12',descanso:150,tipo:'compuesto',notas:'Torso inclinado hacia adelante para enfatizar pecho'},
+  {id:'e_p11',nombre:'Pull Over con Mancuerna (Pecho)',icono:'🌊',musculo:'Pecho',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Enfoca en el estiramiento del pecho'},
+  {id:'e_p12',nombre:'Press en Maquina (Pecho)',icono:'⚙️',musculo:'Pecho',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Ajusta el asiento para que los codos queden a la altura del pecho'},
+  // ── ESPALDA ──
+  {id:'e_e1',nombre:'Peso Muerto Convencional',icono:'🏗️',musculo:'Espalda',series:3,reps:'5-6',descanso:180,tipo:'compuesto',notas:'Espalda neutra, empuja el suelo con los pies'},
+  {id:'e_e2',nombre:'Dominadas Pronadas (Agarre Ancho)',icono:'🏆',musculo:'Espalda',series:3,reps:'6-10',descanso:150,tipo:'compuesto',notas:'Agarre prono, baja completamente cada rep'},
+  {id:'e_e3',nombre:'Dominadas Supinas (Chin Up)',icono:'🔝',musculo:'Espalda',series:3,reps:'6-10',descanso:150,tipo:'compuesto',notas:'Agarre supino, codos hacia las caderas'},
+  {id:'e_e4',nombre:'Jalones al Pecho Amplio (Polea)',icono:'🏊',musculo:'Espalda',series:3,reps:'10',descanso:150,tipo:'compuesto',notas:'Agarre ancho, baja la barra al pecho superior'},
+  {id:'e_e5',nombre:'Jalones al Pecho Supino (Polea)',icono:'🔄',musculo:'Espalda',series:3,reps:'10',descanso:150,tipo:'compuesto',notas:'Agarre supino, codos hacia las caderas al bajar'},
+  {id:'e_e6',nombre:'Remo con Barra (Pendlay)',icono:'🚣',musculo:'Espalda',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Torso 45 grados, barra al ombligo'},
+  {id:'e_e7',nombre:'Remo con Mancuerna (Un Brazo)',icono:'💪',musculo:'Espalda',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Apoya rodilla en banco, codo al techo'},
+  {id:'e_e8',nombre:'Remo en Polea Baja (Sentado)',icono:'🔗',musculo:'Espalda',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Espalda erguida, codos atras del torso'},
+  {id:'e_e9',nombre:'Remo en Maquina (Hammer Strength)',icono:'⚙️',musculo:'Espalda',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Pecho apoyado, jala con los codos'},
+  {id:'e_e10',nombre:'Pull Over con Mancuerna',icono:'🌊',musculo:'Espalda',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Brazos casi extendidos, arco controlado'},
+  {id:'e_e11',nombre:'Face Pull en Polea',icono:'🎯',musculo:'Espalda',series:3,reps:'15',descanso:60,tipo:'aislado',notas:'Polea alta, tira hacia la cara con codos altos'},
+  {id:'e_e12',nombre:'Remo T-Bar',icono:'🚂',musculo:'Espalda',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Pecho apoyado, jala con los codos hacia las caderas'},
+  {id:'e_e13',nombre:'Encogimientos con Barra (Trapecios)',icono:'⬆️',musculo:'Espalda',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Sube los hombros hacia las orejas, sin girar'},
+  {id:'e_e14',nombre:'Good Morning con Barra',icono:'🙇',musculo:'Espalda',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Barra en la espalda, bisagra de cadera, espalda neutra'},
+  // ── HOMBROS ──
+  {id:'e_h1',nombre:'Press Militar con Barra (De Pie)',icono:'🔝',musculo:'Hombros',series:3,reps:'6-8',descanso:150,tipo:'compuesto',notas:'Core activado, no arquear la espalda'},
+  {id:'e_h2',nombre:'Press con Mancuernas (Sentado)',icono:'🏋️',musculo:'Hombros',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Codos a 90 grados en inicio, empuja arriba'},
+  {id:'e_h3',nombre:'Press con Mancuernas (De Pie)',icono:'🏋️',musculo:'Hombros',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Core activado, movimiento explosivo controlado'},
+  {id:'e_h4',nombre:'Elevaciones Laterales con Mancuernas',icono:'🦅',musculo:'Hombros',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Codo ligeramente doblado, sube a altura del hombro'},
+  {id:'e_h5',nombre:'Elevaciones Laterales en Polea',icono:'🔗',musculo:'Hombros',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Tension constante en todo el rango'},
+  {id:'e_h6',nombre:'Elevaciones Frontales con Mancuernas',icono:'⬆️',musculo:'Hombros',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Brazos casi extendidos, sube al frente'},
+  {id:'e_h7',nombre:'Elevaciones Frontales con Barra',icono:'⬆️',musculo:'Hombros',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Agarre prono, sube hasta la altura de los ojos'},
+  {id:'e_h8',nombre:'Pajaros (Hombro Posterior)',icono:'🕊️',musculo:'Hombros',series:3,reps:'15',descanso:60,tipo:'aislado',notas:'Torso inclinado, brazos hacia los lados'},
+  {id:'e_h9',nombre:'Arnold Press',icono:'💪',musculo:'Hombros',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Rota las mancuernas al subir'},
+  {id:'e_h10',nombre:'Remo al Menton con Barra',icono:'⬆️',musculo:'Hombros',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Agarre estrecho, codos por encima de la barra'},
+  {id:'e_h11',nombre:'Press en Maquina (Hombros)',icono:'⚙️',musculo:'Hombros',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Ajusta el asiento, empuja hacia arriba'},
+  {id:'e_h12',nombre:'Reverse Fly en Maquina (Posterior)',icono:'🔄',musculo:'Hombros',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Abre los brazos hacia atras, contrae la parte posterior'},
+  // ── BICEPS ──
+  {id:'e_b1',nombre:'Curl de Biceps con Barra Recta',icono:'💪',musculo:'Biceps',series:3,reps:'8-10',descanso:90,tipo:'compuesto',notas:'Codos fijos al cuerpo, no balancees el torso'},
+  {id:'e_b2',nombre:'Curl de Biceps con Barra EZ',icono:'〽️',musculo:'Biceps',series:3,reps:'8-10',descanso:90,tipo:'aislado',notas:'Agarre supino en la barra curvada, codos fijos'},
+  {id:'e_b3',nombre:'Curl Alternado con Mancuernas',icono:'🔁',musculo:'Biceps',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Un brazo a la vez, gira la muneca arriba'},
+  {id:'e_b4',nombre:'Curl Martillo con Mancuernas',icono:'🔨',musculo:'Biceps',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Agarre neutro, sube hasta el hombro'},
+  {id:'e_b5',nombre:'Curl Concentrado (Sentado)',icono:'🎯',musculo:'Biceps',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Codo apoyado en el muslo, contrae arriba'},
+  {id:'e_b6',nombre:'Curl Predicador con Barra EZ',icono:'📐',musculo:'Biceps',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Baja completamente, no bloquees el codo'},
+  {id:'e_b7',nombre:'Curl en Polea Baja (Maquina)',icono:'🔗',musculo:'Biceps',series:3,reps:'12',descanso:60,tipo:'aislado',notas:'Tension constante en todo el rango'},
+  {id:'e_b8',nombre:'Curl Inclinado con Mancuernas',icono:'💪',musculo:'Biceps',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Banco inclinado, mayor rango de estiramiento'},
+  {id:'e_b9',nombre:'Curl de Cables (Polea Alta)',icono:'🔗',musculo:'Biceps',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Brazos a nivel del hombro, dobla los codos'},
+  // ── TRICEPS ──
+  {id:'e_t1',nombre:'Extension de Triceps en Polea (Barra)',icono:'🔧',musculo:'Triceps',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Codos fijos al cuerpo, extiende completamente'},
+  {id:'e_t2',nombre:'Extension de Triceps en Polea (Cuerda)',icono:'🪢',musculo:'Triceps',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Abre la cuerda al final del movimiento'},
+  {id:'e_t3',nombre:'Press Frances con Barra EZ (Skull Crusher)',icono:'💀',musculo:'Triceps',series:3,reps:'10-12',descanso:90,tipo:'aislado',notas:'Codos apuntando al techo, baja a la frente'},
+  {id:'e_t4',nombre:'Fondos en Banco (Triceps)',icono:'🪑',musculo:'Triceps',series:3,reps:'12-15',descanso:60,tipo:'compuesto',notas:'Cuerpo cerca del banco, codos hacia atras'},
+  {id:'e_t5',nombre:'Press Cerrado con Barra',icono:'🔒',musculo:'Triceps',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Agarre al ancho de hombros, codos pegados'},
+  {id:'e_t6',nombre:'Extension por Encima Cabeza con Mancuerna',icono:'🙆',musculo:'Triceps',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Mancuerna con dos manos, codos cerca de la cabeza'},
+  {id:'e_t7',nombre:'Patada de Triceps con Mancuerna',icono:'🦵',musculo:'Triceps',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Torso paralelo al suelo, extiende el brazo completo'},
+  {id:'e_t8',nombre:'Fondos en Paralelas (Triceps)',icono:'🤸',musculo:'Triceps',series:3,reps:'8-12',descanso:150,tipo:'compuesto',notas:'Torso erguido, codos cerca del cuerpo'},
+  {id:'e_t9',nombre:'Extension Triceps por Encima (Polea)',icono:'🔗',musculo:'Triceps',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Polea alta, extiende hacia abajo con cuerda'},
+  // ── CUADRICEPS ──
+  {id:'e_l1',nombre:'Sentadilla Libre con Barra',icono:'🦵',musculo:'Cuadriceps',series:3,reps:'6-8',descanso:150,tipo:'compuesto',notas:'Rodillas alineadas con pies, baja hasta paralelo'},
+  {id:'e_l2',nombre:'Sentadilla Frontal con Barra',icono:'🔄',musculo:'Cuadriceps',series:3,reps:'6-8',descanso:150,tipo:'compuesto',notas:'Barra en la clavicular, torso erguido'},
+  {id:'e_l3',nombre:'Sentadilla Goblet con Mancuerna',icono:'🏆',musculo:'Cuadriceps',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Mancuerna al pecho, espalda recta'},
+  {id:'e_l4',nombre:'Prensa Inclinada (45 grados)',icono:'⚙️',musculo:'Cuadriceps',series:3,reps:'10',descanso:150,tipo:'compuesto',notas:'Pies al ancho de hombros, rodillas sin bloquear'},
+  {id:'e_l5',nombre:'Extension de Cuadriceps en Maquina',icono:'💥',musculo:'Cuadriceps',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Extiende completo, contrae el cuadriceps arriba'},
+  {id:'e_l6',nombre:'Zancadas Caminando (Lunges)',icono:'🚶',musculo:'Cuadriceps',series:3,reps:'10',descanso:90,tipo:'compuesto',notas:'Rodilla trasera casi toca el suelo'},
+  {id:'e_l7',nombre:'Zancadas Inversas con Mancuernas',icono:'↩️',musculo:'Cuadriceps',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Paso atras, rodilla a 90 grados'},
+  {id:'e_l8',nombre:'Hack Squat en Maquina',icono:'🔩',musculo:'Cuadriceps',series:3,reps:'10',descanso:150,tipo:'compuesto',notas:'Pies adelante, rodillas sobre los pies'},
+  {id:'e_l9',nombre:'Bulgarian Split Squat',icono:'🏋️',musculo:'Cuadriceps',series:3,reps:'8-10',descanso:120,tipo:'compuesto',notas:'Pie trasero en banco, rodilla delantera sobre el pie'},
+  {id:'e_l10',nombre:'Step Up con Mancuernas',icono:'⬆️',musculo:'Cuadriceps',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Sube al banco, empuja con el talon'},
+  // ── ISQUIOS / FEMORAL ──
+  {id:'e_g1',nombre:'Peso Muerto Rumano con Barra',icono:'🔧',musculo:'Isquios',series:3,reps:'8-10',descanso:150,tipo:'compuesto',notas:'Espalda neutra, baja la barra por las piernas'},
+  {id:'e_g2',nombre:'Peso Muerto Rumano con Mancuernas',icono:'🔧',musculo:'Isquios',series:3,reps:'10-12',descanso:120,tipo:'compuesto',notas:'Bisagra de cadera, mancuernas cerca del cuerpo'},
+  {id:'e_g3',nombre:'Curl Femoral Tumbado (Maquina)',icono:'⚡',musculo:'Isquios',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Movimiento controlado, no uses impulso'},
+  {id:'e_g4',nombre:'Curl Femoral Sentado (Maquina)',icono:'⚡',musculo:'Isquios',series:3,reps:'10-12',descanso:60,tipo:'aislado',notas:'Tension en la parte baja del recorrido'},
+  {id:'e_g5',nombre:'Curl Femoral Parado (Polea)',icono:'🔗',musculo:'Isquios',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Polea baja, dobla la rodilla lentamente'},
+  {id:'e_g6',nombre:'Good Morning con Barra',icono:'🙇',musculo:'Isquios',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Barra en la espalda, bisagra de cadera'},
+  // ── GLUTEOS ──
+  {id:'e_gl1',nombre:'Hip Thrust con Barra',icono:'🍑',musculo:'Gluteos',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Espalda en banco, empuja con el talon'},
+  {id:'e_gl2',nombre:'Hip Thrust en Maquina',icono:'⚙️',musculo:'Gluteos',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Ajusta el peso, contrae los gluteos arriba'},
+  {id:'e_gl3',nombre:'Sentadilla Sumo con Barra',icono:'🥊',musculo:'Gluteos',series:3,reps:'10',descanso:120,tipo:'compuesto',notas:'Pies anchos y girados, baja profundo'},
+  {id:'e_gl4',nombre:'Abduccion de Cadera en Maquina',icono:'↔️',musculo:'Gluteos',series:3,reps:'15',descanso:60,tipo:'aislado',notas:'Movimiento controlado, sin balanceo'},
+  {id:'e_gl5',nombre:'Abduccion en Polea (Gluteo Medio)',icono:'🔗',musculo:'Gluteos',series:3,reps:'15',descanso:60,tipo:'aislado',notas:'Polea baja en el tobillo, sube la pierna al costado'},
+  {id:'e_gl6',nombre:'Patada Trasera en Polea (Gluteo)',icono:'🔗',musculo:'Gluteos',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Polea baja, extiende la pierna hacia atras'},
+  {id:'e_gl7',nombre:'Puente de Gluteos con Barra',icono:'🌉',musculo:'Gluteos',series:3,reps:'12-15',descanso:90,tipo:'compuesto',notas:'Tumbado, barra en las caderas, empuja arriba'},
+  // ── PANTORRILLA ──
+  {id:'e_pant1',nombre:'Elevaciones de Pantorrilla de Pie',icono:'👟',musculo:'Pantorrilla',series:4,reps:'15-20',descanso:60,tipo:'aislado',notas:'Rango completo, baja el talon por debajo'},
+  {id:'e_pant2',nombre:'Elevaciones de Pantorrilla Sentado',icono:'🪑',musculo:'Pantorrilla',series:4,reps:'15-20',descanso:60,tipo:'aislado',notas:'Trabaja el soleo, rodillas dobladas'},
+  {id:'e_pant3',nombre:'Elevaciones de Pantorrilla en Prensa',icono:'⚙️',musculo:'Pantorrilla',series:3,reps:'15-20',descanso:60,tipo:'aislado',notas:'Pies en la parte baja de la plataforma'},
+  {id:'e_pant4',nombre:'Elevaciones de Pantorrilla con Mancuerna (Un Pie)',icono:'💪',musculo:'Pantorrilla',series:3,reps:'12-15',descanso:45,tipo:'aislado',notas:'Un pie a la vez, mayor rango de movimiento'},
+  // ── CORE / ABDOMEN ──
+  {id:'e_c1',nombre:'Plancha Frontal',icono:'🪵',musculo:'Core',series:3,reps:'30-60s',descanso:60,tipo:'aislado',notas:'Cuerpo recto, core activado, no arquear'},
+  {id:'e_c2',nombre:'Plancha Lateral',icono:'↔️',musculo:'Core',series:3,reps:'30-45s',descanso:60,tipo:'aislado',notas:'Cadera elevada, cuerpo recto de cabeza a pies'},
+  {id:'e_c3',nombre:'Crunches Abdominales',icono:'🌀',musculo:'Core',series:3,reps:'15-20',descanso:45,tipo:'aislado',notas:'No tires del cuello, exhala al subir'},
+  {id:'e_c4',nombre:'Elevaciones de Piernas Colgado',icono:'⬆️',musculo:'Core',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Baja lento sin tocar el suelo'},
+  {id:'e_c5',nombre:'Elevaciones de Piernas Tumbado',icono:'🦵',musculo:'Core',series:3,reps:'12-15',descanso:45,tipo:'aislado',notas:'Zona lumbar pegada al suelo'},
+  {id:'e_c6',nombre:'Russian Twist con Peso',icono:'🔄',musculo:'Core',series:3,reps:'20',descanso:45,tipo:'aislado',notas:'Rota el torso completo, no solo los brazos'},
+  {id:'e_c7',nombre:'Crunch en Polea',icono:'🔗',musculo:'Core',series:3,reps:'12-15',descanso:60,tipo:'aislado',notas:'Contrae el abdomen, no el cuello'},
+  {id:'e_c8',nombre:'Rueda Abdominal (Ab Wheel)',icono:'⭕',musculo:'Core',series:3,reps:'8-12',descanso:60,tipo:'compuesto',notas:'Extiende completamente, vuelve lento'},
+  {id:'e_c9',nombre:'Dead Bug',icono:'🐛',musculo:'Core',series:3,reps:'10-12',descanso:45,tipo:'aislado',notas:'Zona lumbar en el suelo, extiende brazo y pierna opuesta'},
+  {id:'e_c10',nombre:'Dragon Flag',icono:'🐉',musculo:'Core',series:3,reps:'6-10',descanso:60,tipo:'compuesto',notas:'Cuerpo recto, baja lentamente controlando'},
+  {id:'e_c11',nombre:'Pallof Press en Polea',icono:'🔗',musculo:'Core',series:3,reps:'12-15',descanso:45,tipo:'aislado',notas:'Resiste la rotacion, core activado'},
+  {id:'e_c12',nombre:'Crunches Inversos',icono:'🔃',musculo:'Core',series:3,reps:'15-20',descanso:45,tipo:'aislado',notas:'Levanta las caderas del suelo, no las piernas'},
+  // ── CARDIO / FUNCIONAL ──
+  {id:'e_f1',nombre:'Peso Muerto con Mancuernas (Funcional)',icono:'🔩',musculo:'Funcional',series:3,reps:'10-12',descanso:90,tipo:'compuesto',notas:'Espalda neutra, mancuernas cerca del cuerpo'},
+  {id:'e_f2',nombre:'Thruster con Mancuernas',icono:'🚀',musculo:'Funcional',series:3,reps:'10',descanso:90,tipo:'compuesto',notas:'Sentadilla + press sobre la cabeza en un movimiento'},
+  {id:'e_f3',nombre:'Remo con Mancuerna (Posicion Baja)',icono:'🏃',musculo:'Funcional',series:3,reps:'10-12',descanso:60,tipo:'compuesto',notas:'Posicion de plancha, rema un brazo a la vez'}
+];
+var EX_MUSCLES = ['Todos','Pecho','Espalda','Hombros','Biceps','Triceps','Cuadriceps','Isquios','Gluteos','Pantorrilla','Core','Funcional'];
+
+// ── CUSTOM ROUTINES CACHE ──
+var _customRoutinesCache = {};
+
 // ── UTILS ──
 function fmt(s){ var m=Math.floor(s/60),x=s%60; return m>0?m+':'+(x<10?'0':'')+x:''+s; }
 function toast(msg,ms){
@@ -476,16 +681,24 @@ function init(){
       if(doc.exists && doc.data().revoked){ showBlocked(); return; }
       var nombre=decodeURIComponent(params.get('n')||'');
       var pParam=params.get('p')||'';
-      var planes=pParam.split(',').filter(function(p){return PLANES[p];});
-      if(!nombre||!planes.length){ showInvalidLink(); return; }
-      startStudent(code,{nombre:nombre,planes:planes});
+      var planIds=pParam.split(',').filter(Boolean);
+      if(!nombre||!planIds.length){ showInvalidLink(); return; }
+      var customIds=planIds.filter(function(p){return !PLANES[p];});
+      Promise.all(customIds.map(function(id){
+        return FS.collection('routines').doc(id).get()
+          .then(function(rdoc){ if(rdoc.exists) _customRoutinesCache[id]=rdoc.data(); });
+      })).then(function(){
+        var valid=planIds.filter(function(p){return PLANES[p]||_customRoutinesCache[p];});
+        if(!valid.length){ showInvalidLink(); return; }
+        startStudent(code,{nombre:nombre,planes:valid});
+      });
     })
     .catch(function(){
       var nombre=decodeURIComponent(params.get('n')||'');
       var pParam=params.get('p')||'';
-      var planes=pParam.split(',').filter(function(p){return PLANES[p];});
-      if(!nombre||!planes.length){ showInvalidLink(); return; }
-      startStudent(code,{nombre:nombre,planes:planes});
+      var valid=pParam.split(',').filter(function(p){return PLANES[p]||_customRoutinesCache[p];});
+      if(!nombre||!valid.length){ showInvalidLink(); return; }
+      startStudent(code,{nombre:nombre,planes:valid});
     });
 }
 
@@ -546,6 +759,7 @@ function doLogout(){
 }
 
 // ── ADMIN ──
+var _adminTab = 'alumnos';
 function showAdmin(){
   showScreen('screen-admin');
   var nombre=localStorage.getItem('gt_nombre')||'';
@@ -558,7 +772,25 @@ function showAdmin(){
       }
     });
   }
-  renderAlumnos();
+  switchAdminTab('alumnos');
+}
+function switchAdminTab(tab){
+  _adminTab=tab;
+  document.getElementById('tab-alumnos').classList.toggle('active',tab==='alumnos');
+  document.getElementById('tab-rutinas').classList.toggle('active',tab==='rutinas');
+  var btn=document.getElementById('admin-footer-btn');
+  if(tab==='alumnos'){
+    btn.textContent='+ AGREGAR ALUMNO'; btn.onclick=openModal;
+    renderAlumnos();
+  } else {
+    btn.textContent='+ NUEVA RUTINA'; btn.onclick=function(){openRoutineBuilder(null);};
+    renderRoutines();
+  }
+}
+function getPlanLabel(p){
+  if(PLANES[p]) return PLANES[p].label;
+  if(_customRoutinesCache[p]) return _customRoutinesCache[p].name||p;
+  return p;
 }
 function renderAlumnos(){
   var list=document.getElementById('admin-list');
@@ -578,7 +810,7 @@ function renderAlumnos(){
         var code=docSnap.id;
         var a=docSnap.data();
         var planes=a.planes||['empuje'];
-        var planLabels=planes.map(function(p){return PLANES[p]?PLANES[p].label:p;}).join(' · ');
+        var planLabels=planes.map(getPlanLabel).join(' · ');
         var inicial=(a.nombre||'?')[0].toUpperCase();
         var baseUrl=location.href.split('?')[0];
         var link=baseUrl+'?c='+code+'&n='+encodeURIComponent(a.nombre)+'&p='+planes.join(',');
@@ -604,6 +836,36 @@ function renderAlumnos(){
       list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar. Verificá tu conexión.</div>';
     });
 }
+function renderRoutines(){
+  var list=document.getElementById('admin-list');
+  list.innerHTML='<div class="empty-admin"><div class="ei">⏳</div>Cargando...</div>';
+  if(!_user) return;
+  FS.collection('routines').where('trainerId','==',_user.uid).get()
+    .then(function(snap){
+      if(snap.empty){
+        list.innerHTML='<div class="empty-admin"><div class="ei">📋</div>No tenés rutinas creadas.<br>Tocá "+ NUEVA RUTINA" para crear una.</div>';
+        return;
+      }
+      list.innerHTML='';
+      snap.forEach(function(docSnap){
+        var r=docSnap.data(); var rid=docSnap.id;
+        _customRoutinesCache[rid]=r;
+        var div=document.createElement('div');
+        div.className='routine-card';
+        div.innerHTML=
+          '<div class="rc-icon">📋</div>'+
+          '<div class="rc-info">'+
+            '<div class="rc-name">'+r.name+'</div>'+
+            '<div class="rc-sub">'+(r.ejercicios?r.ejercicios.length:0)+' ejercicios</div>'+
+          '</div>'+
+          '<button class="btn btn-danger-soft btn-sm" onclick="deleteRoutine(\''+rid+'\',\''+r.name+'\')">🗑️</button>';
+        list.appendChild(div);
+      });
+    })
+    .catch(function(){
+      list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar.</div>';
+    });
+}
 function copyLink(link){
   if(navigator.clipboard){
     navigator.clipboard.writeText(link).then(function(){toast('Link copiado! Mandáselo por WhatsApp');vib(20);});
@@ -621,28 +883,60 @@ function deleteAlumno(code,nombre){
     .then(function(){ renderAlumnos(); toast(nombre+' eliminado. Su link ya no funciona.',3000); })
     .catch(function(){ toast('Error al eliminar. Verificá tu conexión.'); });
 }
+function deleteRoutine(rid,nombre){
+  if(!confirm('Eliminar la rutina "'+nombre+'"?\nLos alumnos que la tengan asignada ya no podrán acceder.'))return;
+  FS.collection('routines').doc(rid).delete()
+    .then(function(){ delete _customRoutinesCache[rid]; renderRoutines(); toast('Rutina eliminada.'); })
+    .catch(function(){ toast('Error al eliminar.'); });
+}
 
-// ── MODAL ──
+// ── MODAL AGREGAR ALUMNO ──
 var _selPlans=[];
 function openModal(){
   _selPlans=[];
   document.getElementById('modal-nombre').value='';
-  document.querySelectorAll('.plan-opt').forEach(function(o){o.classList.remove('sel');});
+  var planList=document.getElementById('modal-plan-list');
+  planList.innerHTML='<div style="color:var(--text-muted);font-size:0.8rem;padding:8px 4px">⏳ Cargando rutinas...</div>';
   document.getElementById('modal-add').classList.add('open');
   setTimeout(function(){document.getElementById('modal-nombre').focus();},120);
+  var items=[];
+  Object.keys(PLANES).forEach(function(k){
+    items.push({id:k,label:PLANES[k].label,icon:'🏋️'});
+  });
+  if(_user){
+    FS.collection('routines').where('trainerId','==',_user.uid).get()
+      .then(function(snap){
+        snap.forEach(function(d){ _customRoutinesCache[d.id]=d.data(); items.push({id:d.id,label:d.data().name,icon:'📋'}); });
+        renderModalPlanList(planList,items);
+      })
+      .catch(function(){ renderModalPlanList(planList,items); });
+  } else {
+    renderModalPlanList(planList,items);
+  }
+}
+function renderModalPlanList(planList,items){
+  planList.innerHTML='';
+  items.forEach(function(item){
+    var div=document.createElement('div');
+    div.className='plan-opt-row';
+    div.dataset.p=item.id;
+    div.innerHTML='<span class="por-icon">'+item.icon+'</span><span class="por-label">'+item.label+'</span><div class="por-check"></div>';
+    div.onclick=function(){ selOptRow(div); };
+    planList.appendChild(div);
+  });
+}
+function selOptRow(el){
+  var p=el.dataset.p;
+  var idx=_selPlans.indexOf(p);
+  if(idx===-1){ _selPlans.push(p); el.classList.add('sel'); el.querySelector('.por-check').textContent='✓'; }
+  else { _selPlans.splice(idx,1); el.classList.remove('sel'); el.querySelector('.por-check').textContent=''; }
 }
 function closeModal(){ document.getElementById('modal-add').classList.remove('open'); }
 function closeModalOut(e){ if(e.target===document.getElementById('modal-add'))closeModal(); }
-function selOpt(el){
-  var p=el.dataset.p;
-  var idx=_selPlans.indexOf(p);
-  if(idx===-1){ _selPlans.push(p); el.classList.add('sel'); }
-  else { _selPlans.splice(idx,1); el.classList.remove('sel'); }
-}
 function addAlumno(){
   var nombre=document.getElementById('modal-nombre').value.trim();
   if(!nombre){toast('Ingresá el nombre del alumno');return;}
-  if(!_selPlans.length){toast('Seleccioná al menos un día');return;}
+  if(!_selPlans.length){toast('Seleccioná al menos una rutina');return;}
   if(!_user){toast('Sesión expirada. Iniciá sesión de nuevo.');return;}
   var code=randCode();
   var btn=document.querySelector('#modal-add .btn-green');
@@ -661,6 +955,126 @@ function addAlumno(){
     btn.textContent='AGREGAR'; btn.disabled=false;
     toast('Error al guardar. Verificá tu conexión.');
   });
+}
+
+// ── ROUTINE BUILDER ──
+var _rbExercises=[];
+var _rbMuscle='Todos';
+var _rbEditId=null;
+function openRoutineBuilder(routineId){
+  _rbExercises=[];
+  _rbEditId=routineId;
+  document.getElementById('rb-name').value='';
+  document.getElementById('rb-search').value='';
+  document.getElementById('rb-overlay').classList.add('open');
+  switchRbTab('lib');
+  _rbMuscle='Todos';
+  renderMuscleFilter();
+  renderExLib();
+  renderSelectedExercises();
+}
+function closeRoutineBuilder(){ document.getElementById('rb-overlay').classList.remove('open'); }
+function switchRbTab(tab){
+  document.getElementById('rbt-lib').classList.toggle('active',tab==='lib');
+  document.getElementById('rbt-sel').classList.toggle('active',tab==='sel');
+  document.getElementById('rb-sec-lib').classList.toggle('hidden',tab!=='lib');
+  document.getElementById('rb-sec-sel').classList.toggle('hidden',tab!=='sel');
+  if(tab==='sel') renderSelectedExercises();
+}
+function renderMuscleFilter(){
+  var f=document.getElementById('muscle-filter');
+  f.innerHTML=EX_MUSCLES.map(function(m){
+    return '<button class="mf-btn'+(m===_rbMuscle?' active':'')+'" onclick="setMuscle(\''+m+'\')">'+m+'</button>';
+  }).join('');
+}
+function setMuscle(m){ _rbMuscle=m; renderMuscleFilter(); renderExLib(); }
+function renderExLib(){
+  var q=(document.getElementById('rb-search').value||'').toLowerCase();
+  var items=EX_DB.filter(function(e){
+    var muscleOk=_rbMuscle==='Todos'||e.musculo===_rbMuscle;
+    var searchOk=!q||e.nombre.toLowerCase().indexOf(q)!==-1||e.musculo.toLowerCase().indexOf(q)!==-1;
+    return muscleOk&&searchOk;
+  });
+  var list=document.getElementById('ex-lib-list');
+  document.getElementById('rb-lib-count').textContent=EX_DB.length;
+  if(!items.length){list.innerHTML='<div class="rb-empty">No se encontraron ejercicios.</div>';return;}
+  list.innerHTML='';
+  items.forEach(function(ex){
+    var added=_rbExercises.some(function(e){return e.id===ex.id;});
+    var div=document.createElement('div');
+    div.className='ex-lib-item';
+    div.innerHTML=
+      '<span class="eli-icon">'+ex.icono+'</span>'+
+      '<div class="eli-info">'+
+        '<div class="eli-name">'+ex.nombre+'</div>'+
+        '<div class="eli-tags">'+ex.musculo+' · '+ex.reps+' reps · '+ex.tipo+'</div>'+
+      '</div>'+
+      '<div class="eli-btn '+(added?'added':'add')+'" onclick="toggleExInRoutine(\''+ex.id+'\')">'+(added?'✓':'+')+'</div>';
+    list.appendChild(div);
+  });
+}
+function toggleExInRoutine(exId){
+  var idx=_rbExercises.findIndex(function(e){return e.id===exId;});
+  if(idx===-1){
+    var orig=EX_DB.find(function(e){return e.id===exId;});
+    if(orig) _rbExercises.push({id:orig.id,nombre:orig.nombre,icono:orig.icono,musculo:orig.musculo,series:orig.series,reps:orig.reps,descanso:orig.descanso,tipo:orig.tipo,notas:orig.notas});
+    toast(orig?orig.nombre+' agregado':'');
+  } else {
+    _rbExercises.splice(idx,1);
+  }
+  document.getElementById('rb-sel-count').textContent=_rbExercises.length;
+  renderExLib();
+}
+function renderSelectedExercises(){
+  var c=document.getElementById('rb-selected-list');
+  document.getElementById('rb-sel-count').textContent=_rbExercises.length;
+  if(!_rbExercises.length){
+    c.innerHTML='<div class="rb-empty">No agregaste ejercicios todavía.<br>Usá la pestaña "Biblioteca" para agregar.</div>';
+    return;
+  }
+  c.innerHTML='';
+  _rbExercises.forEach(function(ex,i){
+    var div=document.createElement('div');
+    div.className='rb-ex-item';
+    div.innerHTML=
+      '<div class="rei-top">'+
+        '<span class="rei-icon">'+ex.icono+'</span>'+
+        '<span class="rei-name">'+ex.nombre+'</span>'+
+        '<button class="rei-rm" onclick="removeExFromRoutine('+i+')">✕ Quitar</button>'+
+      '</div>'+
+      '<div class="rei-fields">'+
+        '<div class="rei-field"><label>Series</label><input type="number" min="1" max="10" value="'+ex.series+'" onchange="updateExField('+i+',\'series\',this.value)"/></div>'+
+        '<div class="rei-field"><label>Reps</label><input type="text" value="'+ex.reps+'" onchange="updateExField('+i+',\'reps\',this.value)"/></div>'+
+        '<div class="rei-field"><label>Descanso (s)</label><input type="number" min="15" step="15" value="'+ex.descanso+'" onchange="updateExField('+i+',\'descanso\',parseInt(this.value))"/></div>'+
+      '</div>';
+    c.appendChild(div);
+  });
+}
+function removeExFromRoutine(i){
+  _rbExercises.splice(i,1);
+  renderSelectedExercises(); renderExLib();
+}
+function updateExField(i,field,val){ if(_rbExercises[i]) _rbExercises[i][field]=val; }
+function saveRoutine(){
+  var name=document.getElementById('rb-name').value.trim();
+  if(!name){toast('Ponele un nombre a la rutina');return;}
+  if(!_rbExercises.length){toast('Agregá al menos un ejercicio');return;}
+  if(!_user){toast('Sesión expirada');return;}
+  var btn=document.querySelector('.rb-save-btn');
+  btn.textContent='Guardando...'; btn.disabled=true;
+  var data={trainerId:_user.uid,name:name,ejercicios:_rbExercises.slice(),createdAt:Date.now()};
+  FS.collection('routines').add(data)
+    .then(function(ref){
+      _customRoutinesCache[ref.id]=data;
+      btn.textContent='GUARDAR'; btn.disabled=false;
+      closeRoutineBuilder();
+      toast('Rutina "'+name+'" guardada!',3000); vib(20);
+      if(_adminTab==='rutinas') renderRoutines();
+    })
+    .catch(function(){
+      btn.textContent='GUARDAR'; btn.disabled=false;
+      toast('Error al guardar. Verificá tu conexión.');
+    });
 }
 
 // ── STUDENT MODE ──
@@ -682,20 +1096,30 @@ function startStudent(code,alumno){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   }
 }
+function getPlanEjercicios(plan){
+  if(PLANES[plan]) return PLANES[plan].ejercicios;
+  if(_customRoutinesCache[plan]&&_customRoutinesCache[plan].ejercicios) return _customRoutinesCache[plan].ejercicios;
+  return [];
+}
+function getPlanLabel(p){
+  if(PLANES[p]) return PLANES[p].label;
+  if(_customRoutinesCache[p]) return _customRoutinesCache[p].name||p;
+  return p;
+}
 function renderPlanRow(){
   var row=document.getElementById('st-plan-row');
   if(_alumnoPlanes.length<=1){row.style.display='none';return;}
   row.style.display='flex';
   row.innerHTML=_alumnoPlanes.map(function(p){
-    var pl=PLANES[p]; if(!pl)return '';
-    var active=p===_planActivo?'active':'';
-    return '<button class="plan-chip '+active+'" onclick="switchPlan(\''+p+'\')">'+(pl.label)+'</button>';
+    var label=getPlanLabel(p);
+    var active=p===_planActivo?' active':'';
+    return '<button class="plan-chip'+active+'" onclick="switchPlan(\''+p+'\')">'+label+'</button>';
   }).join('');
 }
 function switchPlan(plan){ if(plan===_planActivo)return; _planActivo=plan; cargarPlan(plan); }
 function cargarPlan(plan){
   Object.keys(_tim).forEach(function(k){clearInterval(_tim[k]);}); _tim={};
-  _ejs=PLANES[plan].ejercicios;
+  _ejs=getPlanEjercicios(plan);
   renderPlanRow(); initEst(); renderWV(); updHdr();
 }
 function initEst(){
