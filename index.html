@@ -293,13 +293,64 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .sa-bill-amount{font-size:1.05rem;font-weight:800;color:var(--accent);}
 .sa-bill-label{font-size:0.6rem;color:var(--text-muted);margin-top:1px;text-align:right;}
 .sa-bill-zero{font-size:0.78rem;color:var(--text-muted);font-style:italic;}
+/* ── WELCOME SCREEN ── */
+.welcome-logo{font-size:3.5rem;margin-bottom:4px;}
+.welcome-title{font-size:1.6rem;font-weight:800;text-align:center;}
+.welcome-sub{font-size:0.82rem;color:var(--text-dim);text-align:center;line-height:1.6;max-width:280px;}
+.welcome-cards{display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px;}
+.welcome-card{background:var(--surface);border:1px solid #ffffff10;border-radius:var(--radius);padding:20px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color var(--trans),background var(--trans);}
+.welcome-card:active{background:var(--surface2);}
+.welcome-card.trainer{border-color:#40c4ff30;}
+.welcome-card.student{border-color:#00e67630;}
+.wc-icon{font-size:2rem;flex-shrink:0;}
+.wc-info{flex:1;}
+.wc-title{font-size:1rem;font-weight:800;}
+.wc-sub{font-size:0.74rem;color:var(--text-dim);margin-top:3px;line-height:1.4;}
+.wc-arrow{font-size:1.2rem;color:var(--text-muted);}
+.welcome-student-input{display:none;width:100%;max-width:360px;flex-direction:column;gap:10px;}
+.welcome-student-input.open{display:flex;}
+.welcome-hint{font-size:0.78rem;color:var(--text-dim);text-align:center;line-height:1.5;}
+/* ── ADMIN COUNTER BADGE ── */
+.admin-count-badge{display:inline-flex;align-items:center;gap:5px;background:var(--accent-dark);border:1px solid #00e67640;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;color:var(--accent);margin-top:5px;}
 @media(min-width:500px){body{max-width:430px;margin:0 auto;}}
 </style>
 </head>
 <body>
 
+<!-- ======== SCREEN: WELCOME ======== -->
+<div class="screen active" id="screen-welcome">
+  <div class="center-wrap">
+    <div class="welcome-logo">🏋️</div>
+    <div class="welcome-title">GymTracker Pro</div>
+    <div class="welcome-sub">¿Cómo querés ingresar?</div>
+    <div class="welcome-cards">
+      <div class="welcome-card trainer" onclick="showScreen('screen-login')">
+        <div class="wc-icon">🧑‍💼</div>
+        <div class="wc-info">
+          <div class="wc-title">Soy entrenador</div>
+          <div class="wc-sub">Accedé a tu panel para gestionar alumnos y rutinas</div>
+        </div>
+        <div class="wc-arrow">›</div>
+      </div>
+      <div class="welcome-card student" onclick="showWelcomeStudentInput()">
+        <div class="wc-icon">🏃</div>
+        <div class="wc-info">
+          <div class="wc-title">Soy alumno</div>
+          <div class="wc-sub">Necesitás el link que te mandó tu entrenador</div>
+        </div>
+        <div class="wc-arrow">›</div>
+      </div>
+      <div class="welcome-student-input" id="welcome-student-input">
+        <div class="welcome-hint">📲 Pedile el link a tu entrenador.<br>Se ve así: <strong>gymtracker...?c=ABC123</strong><br>Abrilo directamente desde WhatsApp o el chat donde te lo mandaron.</div>
+        <input class="field-input" id="welcome-link-input" type="url" placeholder="Pegá tu link aquí" autocomplete="off"/>
+        <button class="btn btn-green" onclick="goToStudentLink()">ABRIR MI APP ›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ======== SCREEN: SETUP ======== -->
-<div class="screen active" id="screen-setup">
+<div class="screen" id="screen-setup">
   <div class="center-wrap">
     <div class="cs-logo">🏋️</div>
     <div class="cs-title">GymTracker Pro</div>
@@ -351,6 +402,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <div>
         <div class="admin-title">💪 Panel del Entrenador</div>
         <div class="admin-sub" id="admin-sub">Gestión de alumnos</div>
+        <div class="admin-count-badge" id="admin-count-badge" style="display:none">👥 <span id="admin-count-num">0</span> alumnos activos</div>
       </div>
       <button class="btn btn-outline btn-sm" onclick="doLogout()">Salir</button>
     </div>
@@ -769,7 +821,7 @@ auth.onAuthStateChanged(function(user){
       document.getElementById('login-email').value=remembered;
       document.getElementById('login-title').textContent='Bienvenido de nuevo 👋';
     } else {
-      showScreen('screen-setup');
+      showScreen('screen-welcome');
     }
   }
 });
@@ -836,6 +888,21 @@ function init(){
       if(!nombre||!valid.length){ showInvalidLink(); return; }
       startStudent(code,{nombre:nombre,planes:valid});
     });
+}
+
+// ── WELCOME SCREEN ──
+function showWelcomeStudentInput(){
+  var inp=document.getElementById('welcome-student-input');
+  if(inp) inp.classList.add('open');
+}
+function goToStudentLink(){
+  var val=(document.getElementById('welcome-link-input').value||'').trim();
+  if(!val){toast('Pegá tu link primero');return;}
+  try{
+    var url=new URL(val);
+    if(!url.searchParams.get('c')){toast('Ese link no parece válido. Pedile uno nuevo a tu entrenador.');return;}
+    location.href=val;
+  }catch(e){toast('Link no válido. Debe empezar con https://');}
 }
 
 // ── SETUP ──
@@ -910,6 +977,15 @@ function showAdmin(){
       var saTab=document.getElementById('tab-superadmin');
       if(saTab) saTab.style.display=isSA?'':'none';
     });
+    FS.collection('students').where('trainerId','==',_user.uid).where('revoked','==',false).get()
+      .then(function(snap){
+        var badge=document.getElementById('admin-count-badge');
+        var num=document.getElementById('admin-count-num');
+        if(badge&&num&&snap.size>0){
+          num.textContent=snap.size;
+          badge.style.display='inline-flex';
+        }
+      }).catch(function(){});
   }
   switchAdminTab('alumnos');
 }
