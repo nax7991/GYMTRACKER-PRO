@@ -239,6 +239,27 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .plan-opt-row.sel .por-check{background:var(--accent);border-color:var(--accent);color:#000;}
 .btn-demo{background:transparent;border:1px solid #ffffff18;color:var(--text-dim);border-radius:8px;padding:5px 9px;font-size:0.78rem;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .btn-demo:active{background:var(--surface2);}
+/* ── TRAINER HISTORY OVERLAY ── */
+.th-overlay{position:fixed;inset:0;background:var(--bg);z-index:700;display:none;flex-direction:column;}
+.th-overlay.open{display:flex;}
+.th-header{background:var(--surface);padding:14px 16px;border-bottom:1px solid #ffffff08;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.th-back{background:transparent;border:1px solid #ffffff20;color:var(--text-dim);border-radius:var(--radius-sm);padding:8px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;}
+.th-title{flex:1;font-size:1rem;font-weight:800;}
+.th-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.th-empty{text-align:center;padding:56px 24px;color:var(--text-dim);font-size:0.85rem;line-height:1.7;}
+.th-empty .ei{font-size:2.5rem;margin-bottom:12px;}
+.th-ex-card{background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;overflow:hidden;}
+.th-ex-header{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;}
+.th-ex-icon{font-size:1.3rem;}
+.th-ex-name{flex:1;font-size:0.9rem;font-weight:700;}
+.th-ex-count{font-size:0.72rem;color:var(--text-dim);}
+.th-ex-rows{padding:0 14px 12px;display:none;flex-direction:column;gap:3px;}
+.th-ex-rows.open{display:flex;}
+.th-ex-row{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--text-dim);padding:5px 0;border-bottom:1px solid #ffffff06;}
+.th-ex-row:last-child{border-bottom:none;}
+.th-ex-row .th-peso{color:var(--accent);font-weight:700;font-size:0.82rem;}
+.th-summary{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:0.78rem;color:var(--text-dim);text-align:center;}
+.th-summary strong{color:var(--accent);}
 @media(min-width:500px){body{max-width:430px;margin:0 auto;}}
 </style>
 </head>
@@ -428,6 +449,15 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div class="cel-msg" id="cel-msg">Mensaje</div>
     <div class="cel-sub">Tocá para cerrar</div>
   </div>
+</div>
+
+<!-- ======== TRAINER HISTORY OVERLAY ======== -->
+<div class="th-overlay" id="th-overlay">
+  <div class="th-header">
+    <button class="th-back" onclick="closeAlumnoHistory()">← Volver</button>
+    <div class="th-title" id="th-title">Historial</div>
+  </div>
+  <div class="th-scroll" id="th-scroll"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -829,6 +859,7 @@ function renderAlumnos(){
           '</div>'+
           '<div class="ac-actions">'+
             '<button class="btn btn-blue btn-sm" style="flex:1" onclick="copyLink(\''+link+'\')">📋 Copiar link</button>'+
+            '<button class="btn btn-outline btn-sm" onclick="openAlumnoHistory(\''+code+'\',\''+a.nombre+'\')">📊</button>'+
             '<button class="btn btn-danger-soft btn-sm" onclick="deleteAlumno(\''+code+'\',\''+a.nombre+'\')">🗑️</button>'+
           '</div>';
         list.appendChild(div);
@@ -837,6 +868,77 @@ function renderAlumnos(){
     .catch(function(){
       list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar. Verificá tu conexión.</div>';
     });
+}
+function openAlumnoHistory(code, nombre){
+  document.getElementById('th-title').textContent='📊 '+nombre;
+  var scroll=document.getElementById('th-scroll');
+  scroll.innerHTML='<div class="th-empty"><div class="ei">⏳</div>Cargando historial...</div>';
+  document.getElementById('th-overlay').classList.add('open');
+  FS.collection('records').doc(code).get()
+    .then(function(doc){
+      scroll.innerHTML='';
+      if(!doc.exists||!Object.keys(doc.data()).length){
+        scroll.innerHTML='<div class="th-empty"><div class="ei">📋</div>Sin registros aún.<br>El alumno no ha completado ninguna sesión todavía.</div>';
+        return;
+      }
+      var data=doc.data();
+      var allExIds=Object.keys(data);
+      var totalSessions=0;
+      var exLookup={};
+      EX_DB.forEach(function(e){exLookup[e.id]=e;});
+      Object.values(PLANES).forEach(function(pl){
+        pl.ejercicios.forEach(function(e){exLookup[e.id]=e;});
+      });
+      Object.values(_customRoutinesCache).forEach(function(r){
+        if(r.ejercicios) r.ejercicios.forEach(function(e){exLookup[e.id]=e;});
+      });
+      var exWithData=allExIds.filter(function(id){return Array.isArray(data[id])&&data[id].length>0;});
+      if(!exWithData.length){
+        scroll.innerHTML='<div class="th-empty"><div class="ei">📋</div>Sin registros todavía.</div>';
+        return;
+      }
+      exWithData.sort(function(a,b){
+        var la=data[a],lb=data[b];
+        var ta=la[la.length-1].ts||0,tb=lb[lb.length-1].ts||0;
+        return tb-ta;
+      });
+      exWithData.forEach(function(exId){
+        var recs=data[exId];
+        totalSessions+=recs.length;
+        var ex=exLookup[exId];
+        var icon=ex?ex.icono:'💪';
+        var exName=ex?ex.nombre:exId;
+        var sorted=recs.slice().sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+        var maxPeso=Math.max.apply(null,sorted.map(function(r){return r.peso||0;}));
+        var rows=sorted.map(function(h){
+          var d=new Date(h.ts||0);
+          var dateStr=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+          var pesoStr=h.peso>0?h.peso+' kg':'Sin peso';
+          var isPR=(h.peso&&h.peso>=maxPeso&&h.peso>0)?'<span style="color:var(--warn);font-size:0.68rem;margin-left:4px">🏆PR</span>':'';
+          return '<div class="th-ex-row"><span>'+dateStr+' · Serie '+h.serie+'</span><span class="th-peso">'+pesoStr+isPR+'</span></div>';
+        }).join('');
+        var card=document.createElement('div');
+        card.className='th-ex-card';
+        card.innerHTML=
+          '<div class="th-ex-header" onclick="this.nextElementSibling.classList.toggle(\'open\')">'+
+            '<span class="th-ex-icon">'+icon+'</span>'+
+            '<span class="th-ex-name">'+exName+'</span>'+
+            '<span class="th-ex-count">'+sorted.length+' registros · Max: '+(maxPeso>0?maxPeso+' kg':'-')+'</span>'+
+          '</div>'+
+          '<div class="th-ex-rows">'+rows+'</div>';
+        scroll.appendChild(card);
+      });
+      var summary=document.createElement('div');
+      summary.className='th-summary';
+      summary.innerHTML='<strong>'+exWithData.length+'</strong> ejercicios registrados · <strong>'+totalSessions+'</strong> series totales';
+      scroll.appendChild(summary);
+    })
+    .catch(function(){
+      scroll.innerHTML='<div class="th-empty"><div class="ei">⚠️</div>Error al cargar. Verificá tu conexión.</div>';
+    });
+}
+function closeAlumnoHistory(){
+  document.getElementById('th-overlay').classList.remove('open');
 }
 function renderRoutines(){
   var list=document.getElementById('admin-list');
