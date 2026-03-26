@@ -270,12 +270,29 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .ios-banner-close{background:transparent;border:none;color:var(--text-muted);font-size:1.2rem;padding:4px;cursor:pointer;flex-shrink:0;}
 .ios-arrow{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--accent);font-weight:700;}
 /* ── SUPER ADMIN ── */
+.sa-summary{background:var(--surface2);border-radius:var(--radius-sm);border:1px solid #ffffff10;padding:16px;margin-bottom:4px;display:flex;flex-direction:column;gap:10px;}
+.sa-summary-title{font-size:0.68rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
+.sa-summary-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.sa-stat{background:var(--surface3);border-radius:10px;padding:10px 8px;text-align:center;}
+.sa-stat-val{font-size:1.3rem;font-weight:800;color:var(--accent);}
+.sa-stat-lbl{font-size:0.62rem;color:var(--text-muted);margin-top:2px;line-height:1.3;}
+.sa-price-row{display:flex;align-items:center;gap:8px;}
+.sa-price-lbl{font-size:0.75rem;color:var(--text-dim);flex-shrink:0;}
+.sa-price-input{background:var(--surface3);border:1px solid #ffffff15;border-radius:8px;color:var(--text);font-size:0.9rem;font-weight:700;padding:7px 10px;width:90px;outline:none;text-align:right;}
+.sa-price-input:focus{border-color:var(--accent);}
+.sa-price-cur{font-size:0.75rem;color:var(--text-dim);}
 .sa-trainer-card{background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;padding:14px 16px;display:flex;align-items:center;gap:12px;}
-.sa-avatar{width:38px;height:38px;background:#1a2a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:var(--rest-accent);flex-shrink:0;}
-.sa-info{flex:1;}
-.sa-name{font-size:0.9rem;font-weight:700;}
-.sa-email{font-size:0.68rem;color:var(--text-muted);font-family:monospace;margin-top:2px;}
-.sa-count{font-size:0.7rem;color:var(--text-dim);margin-top:2px;}
+.sa-trainer-card.sa-paying{border-color:#00e67630;}
+.sa-avatar{width:40px;height:40px;background:#1a2a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;color:var(--rest-accent);flex-shrink:0;}
+.sa-info{flex:1;min-width:0;}
+.sa-name{font-size:0.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sa-email{font-size:0.65rem;color:var(--text-muted);font-family:monospace;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sa-count{font-size:0.72rem;color:var(--text-dim);margin-top:3px;}
+.sa-count strong{color:var(--text);}
+.sa-bill{flex-shrink:0;text-align:right;}
+.sa-bill-amount{font-size:1.05rem;font-weight:800;color:var(--accent);}
+.sa-bill-label{font-size:0.6rem;color:var(--text-muted);margin-top:1px;text-align:right;}
+.sa-bill-zero{font-size:0.78rem;color:var(--text-muted);font-style:italic;}
 @media(min-width:500px){body{max-width:430px;margin:0 auto;}}
 </style>
 </head>
@@ -909,29 +926,81 @@ function switchAdminTab(tab){
 function renderSuperAdmin(){
   var list=document.getElementById('admin-list');
   list.innerHTML='<div class="empty-admin"><div class="ei">⏳</div>Cargando entrenadores...</div>';
+  var savedPrice=0;
+  try{savedPrice=parseFloat(localStorage.getItem('gt_sa_price'))||0;}catch(e){}
   FS.collection('trainers').get().then(function(snap){
-    if(snap.empty){list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>Sin entrenadores.</div>';return;}
-    list.innerHTML='';
-    var promises=snap.docs.map(function(d){
-      var t=d.data(); var tid=d.id;
-      return FS.collection('students').where('trainerId','==',tid).where('revoked','==',false).get()
-        .then(function(ss){
-          var div=document.createElement('div');
-          div.className='sa-trainer-card';
-          var ini=(t.nombre||'?')[0].toUpperCase();
-          div.innerHTML=
-            '<div class="sa-avatar">'+ini+'</div>'+
-            '<div class="sa-info">'+
-              '<div class="sa-name">'+t.nombre+'</div>'+
-              '<div class="sa-email">'+t.email+'</div>'+
-              '<div class="sa-count">👥 '+ss.size+' alumno'+(ss.size!==1?'s':'')+'</div>'+
-            '</div>';
-          list.appendChild(div);
+    if(snap.empty){list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>Sin entrenadores registrados.</div>';return;}
+    var trainers=[];
+    snap.docs.forEach(function(d){trainers.push({id:d.id,data:d.data()});});
+    Promise.all(trainers.map(function(tr){
+      return FS.collection('students').where('trainerId','==',tr.id).where('revoked','==',false).get()
+        .then(function(ss){tr.count=ss.size;});
+    })).then(function(){
+      trainers.sort(function(a,b){return b.count-a.count;});
+      var totalAlumnos=trainers.reduce(function(s,t){return s+t.count;},0);
+      list.innerHTML='';
+      var summary=document.createElement('div');
+      summary.className='sa-summary';
+      summary.innerHTML=
+        '<div class="sa-summary-title">📊 Resumen de facturación</div>'+
+        '<div class="sa-summary-stats">'+
+          '<div class="sa-stat"><div class="sa-stat-val" id="sa-total-trainers">'+trainers.length+'</div><div class="sa-stat-lbl">Entrenadores</div></div>'+
+          '<div class="sa-stat"><div class="sa-stat-val" id="sa-total-alumnos">'+totalAlumnos+'</div><div class="sa-stat-lbl">Alumnos activos</div></div>'+
+          '<div class="sa-stat"><div class="sa-stat-val" id="sa-total-rev">$'+((savedPrice*totalAlumnos)||0).toLocaleString('es')+'</div><div class="sa-stat-lbl">Ingreso mensual</div></div>'+
+        '</div>'+
+        '<div class="sa-price-row">'+
+          '<span class="sa-price-lbl">💲 Precio por alumno/mes:</span>'+
+          '<input class="sa-price-input" id="sa-price-inp" type="number" min="0" step="100" value="'+savedPrice+'" placeholder="0"/>'+
+          '<span class="sa-price-cur">ARS</span>'+
+        '</div>';
+      list.appendChild(summary);
+      document.getElementById('sa-price-inp').addEventListener('input',function(){
+        var p=parseFloat(this.value)||0;
+        try{localStorage.setItem('gt_sa_price',p);}catch(e){}
+        var total=0;
+        document.querySelectorAll('[data-sa-count]').forEach(function(el){
+          var cnt=parseInt(el.dataset.saCount)||0;
+          total+=cnt;
+          var amt=el.parentElement.querySelector('.sa-bill-amount');
+          var lbl=el.parentElement.querySelector('.sa-bill-label');
+          var zero=el.parentElement.querySelector('.sa-bill-zero');
+          if(cnt>0&&p>0){
+            if(amt){amt.textContent='$'+(p*cnt).toLocaleString('es');}
+            if(lbl){lbl.style.display='';}
+            if(zero){zero.style.display='none';}
+          } else {
+            if(amt){amt.textContent='';}
+            if(lbl){lbl.style.display='none';}
+            if(zero){zero.style.display='';}
+          }
         });
+        var revEl=document.getElementById('sa-total-rev');
+        if(revEl) revEl.textContent='$'+((p*total)||0).toLocaleString('es');
+      });
+      trainers.forEach(function(tr){
+        var t=tr.data; var cnt=tr.count;
+        var ini=(t.nombre||'?')[0].toUpperCase();
+        var p=savedPrice; var bill=p*cnt;
+        var billHtml= cnt>0&&p>0
+          ? '<div class="sa-bill-amount">$'+bill.toLocaleString('es')+'</div><div class="sa-bill-label">/mes</div>'
+          : '<div class="sa-bill-zero">'+(cnt===0?'Sin alumnos':'—')+'</div>';
+        var div=document.createElement('div');
+        div.className='sa-trainer-card'+(cnt>0?' sa-paying':'');
+        div.innerHTML=
+          '<div class="sa-avatar">'+ini+'</div>'+
+          '<div class="sa-info">'+
+            '<div class="sa-name">'+t.nombre+'</div>'+
+            '<div class="sa-email">'+t.email+'</div>'+
+            '<div class="sa-count" data-sa-count="'+cnt+'"><strong>'+cnt+'</strong> alumno'+(cnt!==1?'s activos':'activo')+'</div>'+
+          '</div>'+
+          '<div class="sa-bill">'+billHtml+'</div>';
+        list.appendChild(div);
+      });
+    }).catch(function(){
+      list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar alumnos.</div>';
     });
-    Promise.all(promises).catch(function(){});
   }).catch(function(){
-    list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar.</div>';
+    list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar entrenadores.</div>';
   });
 }
 function getPlanLabel(p){
