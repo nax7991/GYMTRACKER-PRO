@@ -260,6 +260,22 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .th-ex-row .th-peso{color:var(--accent);font-weight:700;font-size:0.82rem;}
 .th-summary{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:0.78rem;color:var(--text-dim);text-align:center;}
 .th-summary strong{color:var(--accent);}
+/* ── IOS INSTALL BANNER ── */
+.ios-banner{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--accent);padding:14px 16px calc(14px + var(--safe-bottom));z-index:800;display:none;flex-direction:column;gap:8px;max-width:430px;margin:0 auto;}
+.ios-banner.show{display:flex;}
+.ios-banner-row{display:flex;align-items:center;gap:10px;}
+.ios-banner-icon{font-size:1.8rem;flex-shrink:0;}
+.ios-banner-text{flex:1;font-size:0.78rem;color:var(--text-dim);line-height:1.5;}
+.ios-banner-text strong{color:var(--text);display:block;font-size:0.85rem;margin-bottom:2px;}
+.ios-banner-close{background:transparent;border:none;color:var(--text-muted);font-size:1.2rem;padding:4px;cursor:pointer;flex-shrink:0;}
+.ios-arrow{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--accent);font-weight:700;}
+/* ── SUPER ADMIN ── */
+.sa-trainer-card{background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.sa-avatar{width:38px;height:38px;background:#1a2a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:var(--rest-accent);flex-shrink:0;}
+.sa-info{flex:1;}
+.sa-name{font-size:0.9rem;font-weight:700;}
+.sa-email{font-size:0.68rem;color:var(--text-muted);font-family:monospace;margin-top:2px;}
+.sa-count{font-size:0.7rem;color:var(--text-dim);margin-top:2px;}
 @media(min-width:500px){body{max-width:430px;margin:0 auto;}}
 </style>
 </head>
@@ -325,6 +341,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="admin-tabs">
     <button class="admin-tab active" id="tab-alumnos" onclick="switchAdminTab('alumnos')">👥 Alumnos</button>
     <button class="admin-tab" id="tab-rutinas" onclick="switchAdminTab('rutinas')">📋 Mis Rutinas</button>
+    <button class="admin-tab" id="tab-superadmin" onclick="switchAdminTab('superadmin')" style="display:none">👑 Global</button>
   </div>
   <div class="admin-scroll" id="admin-list"></div>
   <div class="admin-footer" id="admin-footer">
@@ -390,6 +407,21 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           <div class="set-info">
             <div class="set-name">Borrar mi historial</div>
             <div class="set-sub">Elimina tus registros de pesos guardados</div>
+          </div>
+        </div>
+        <div class="set-row danger" onclick="studentLogout()">
+          <span class="set-icon">🚪</span>
+          <div class="set-info">
+            <div class="set-name">Cerrar sesión de alumno</div>
+            <div class="set-sub">Pedile el link a tu entrenador para volver a entrar</div>
+          </div>
+        </div>
+        <div class="set-section-label">Instalación</div>
+        <div class="set-row" id="ios-install-row" style="display:none" onclick="showIosBanner()">
+          <span class="set-icon">📲</span>
+          <div class="set-info">
+            <div class="set-name">Instalar en iPhone / iPad</div>
+            <div class="set-sub">Ver instrucciones para agregar a pantalla de inicio</div>
           </div>
         </div>
         <div class="set-section-label">Información</div>
@@ -461,6 +493,19 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ======== IOS INSTALL BANNER ======== -->
+<div class="ios-banner" id="ios-banner">
+  <div class="ios-banner-row">
+    <div class="ios-banner-icon">📲</div>
+    <div class="ios-banner-text">
+      <strong>Instalar GymTracker Pro</strong>
+      Tocá el botón de compartir <strong style="font-size:1rem">⬆</strong> y luego <strong>"Agregar a pantalla de inicio"</strong>
+    </div>
+    <button class="ios-banner-close" onclick="closeIosBanner()">✕</button>
+  </div>
+  <div class="ios-arrow">↑ Botón compartir está abajo en Safari</div>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -641,6 +686,16 @@ var EX_MUSCLES = ['Todos','Pecho','Espalda','Hombros','Biceps','Triceps','Cuadri
 // ── CUSTOM ROUTINES CACHE ──
 var _customRoutinesCache = {};
 
+// ── SUPER ADMIN (cambiá este email por el tuyo) ──
+var SUPER_ADMIN_EMAIL = 'admin@gymtrackerpro.com';
+
+// ── STUDENT MODE FLAG (detectado antes de cualquier async) ──
+var _studentMode = (function(){
+  var p=new URLSearchParams(location.search);
+  if(p.get('c')) return true;
+  try{ return !!localStorage.getItem('gt_student'); }catch(e){ return false; }
+})();
+
 // ── UTILS ──
 function fmt(s){ var m=Math.floor(s/60),x=s%60; return m>0?m+':'+(x<10?'0':'')+x:''+s; }
 function toast(msg,ms){
@@ -686,8 +741,7 @@ var DB = {
 // ── AUTH STATE LISTENER (solo trainer) ──
 var _user = null;
 auth.onAuthStateChanged(function(user){
-  var params=new URLSearchParams(location.search);
-  if(params.get('c')) return;
+  if(_studentMode) return;
   _user=user;
   if(user){
     showAdmin();
@@ -707,7 +761,31 @@ auth.onAuthStateChanged(function(user){
 function init(){
   var params=new URLSearchParams(location.search);
   var code=params.get('c');
-  if(!code) return;
+
+  if(!code){
+    try{
+      var saved=localStorage.getItem('gt_student');
+      if(saved){
+        var sess=JSON.parse(saved);
+        if(sess&&sess.code&&sess.nombre&&sess.planes&&sess.planes.length){
+          var customIds=sess.planes.filter(function(p){return !PLANES[p];});
+          Promise.all(customIds.map(function(id){
+            return FS.collection('routines').doc(id).get()
+              .then(function(rdoc){ if(rdoc.exists) _customRoutinesCache[id]=rdoc.data(); });
+          })).then(function(){
+            var valid=sess.planes.filter(function(p){return PLANES[p]||_customRoutinesCache[p];});
+            if(valid.length) startStudent(sess.code,{nombre:sess.nombre,planes:valid});
+          }).catch(function(){
+            var valid=sess.planes.filter(function(p){return PLANES[p];});
+            if(valid.length) startStudent(sess.code,{nombre:sess.nombre,planes:valid});
+          });
+          return;
+        }
+      }
+    }catch(e){}
+    return;
+  }
+
   FS.collection('students').doc(code).get()
     .then(function(doc){
       if(doc.exists && doc.data().revoked){ showBlocked(); return; }
@@ -802,6 +880,9 @@ function showAdmin(){
         document.getElementById('admin-sub').textContent='Entrenador: '+doc.data().nombre;
         localStorage.setItem('gt_nombre',doc.data().nombre);
       }
+      var isSA=_user.email===SUPER_ADMIN_EMAIL;
+      var saTab=document.getElementById('tab-superadmin');
+      if(saTab) saTab.style.display=isSA?'':'none';
     });
   }
   switchAdminTab('alumnos');
@@ -810,14 +891,48 @@ function switchAdminTab(tab){
   _adminTab=tab;
   document.getElementById('tab-alumnos').classList.toggle('active',tab==='alumnos');
   document.getElementById('tab-rutinas').classList.toggle('active',tab==='rutinas');
+  var saTab=document.getElementById('tab-superadmin');
+  if(saTab) saTab.classList.toggle('active',tab==='superadmin');
   var btn=document.getElementById('admin-footer-btn');
+  var footer=document.getElementById('admin-footer');
   if(tab==='alumnos'){
-    btn.textContent='+ AGREGAR ALUMNO'; btn.onclick=openModal;
+    btn.textContent='+ AGREGAR ALUMNO'; btn.onclick=openModal; footer.style.display='';
     renderAlumnos();
-  } else {
-    btn.textContent='+ NUEVA RUTINA'; btn.onclick=function(){openRoutineBuilder(null);};
+  } else if(tab==='rutinas'){
+    btn.textContent='+ NUEVA RUTINA'; btn.onclick=function(){openRoutineBuilder(null);}; footer.style.display='';
     renderRoutines();
+  } else if(tab==='superadmin'){
+    footer.style.display='none';
+    renderSuperAdmin();
   }
+}
+function renderSuperAdmin(){
+  var list=document.getElementById('admin-list');
+  list.innerHTML='<div class="empty-admin"><div class="ei">⏳</div>Cargando entrenadores...</div>';
+  FS.collection('trainers').get().then(function(snap){
+    if(snap.empty){list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>Sin entrenadores.</div>';return;}
+    list.innerHTML='';
+    var promises=snap.docs.map(function(d){
+      var t=d.data(); var tid=d.id;
+      return FS.collection('students').where('trainerId','==',tid).where('revoked','==',false).get()
+        .then(function(ss){
+          var div=document.createElement('div');
+          div.className='sa-trainer-card';
+          var ini=(t.nombre||'?')[0].toUpperCase();
+          div.innerHTML=
+            '<div class="sa-avatar">'+ini+'</div>'+
+            '<div class="sa-info">'+
+              '<div class="sa-name">'+t.nombre+'</div>'+
+              '<div class="sa-email">'+t.email+'</div>'+
+              '<div class="sa-count">👥 '+ss.size+' alumno'+(ss.size!==1?'s':'')+'</div>'+
+            '</div>';
+          list.appendChild(div);
+        });
+    });
+    Promise.all(promises).catch(function(){});
+  }).catch(function(){
+    list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar.</div>';
+  });
 }
 function getPlanLabel(p){
   if(PLANES[p]) return PLANES[p].label;
@@ -1191,6 +1306,7 @@ function startStudent(code,alumno){
   _planActivo=_alumnoPlanes[0];
   document.getElementById('st-nombre-hdr').textContent=alumno.nombre;
   document.getElementById('fecha-hoy').textContent=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+  try{localStorage.setItem('gt_student',JSON.stringify({code:code,nombre:alumno.nombre,planes:_alumnoPlanes}));}catch(e){}
   DB.load(code).then(function(){
     renderPlanRow();
     cargarPlan(_planActivo);
@@ -1199,6 +1315,12 @@ function startStudent(code,alumno){
   if('serviceWorker' in navigator && location.protocol!=='file:'){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   }
+  detectIos();
+}
+function studentLogout(){
+  if(!confirm('Cerrar sesión de alumno? Vas a necesitar el link de tu entrenador para volver a entrar.')) return;
+  try{localStorage.removeItem('gt_student');}catch(e){}
+  location.href=location.pathname;
 }
 function getPlanEjercicios(plan){
   if(PLANES[plan]) return PLANES[plan].ejercicios;
@@ -1336,13 +1458,33 @@ function acReiniciar(id){clearInterval(_tim[id]);var st=_est[id];st.fase='Selecc
 function adj(id,delta){var inp=document.getElementById('w-'+id);if(!inp)return;inp.value=Math.max(0,(parseFloat(inp.value)||0)+delta);}
 function startTimer(id){
   clearInterval(_tim[id]);
+  var st=_est[id];
+  st._timerStart=Date.now();
+  st._timerInitial=st.tiempoRestante;
   _tim[id]=setInterval(function(){
     var st=_est[id];if(st.fase!=='Descansando'){clearInterval(_tim[id]);return;}
-    st.tiempoRestante--;
+    var elapsed=Math.floor((Date.now()-st._timerStart)/1000);
+    st.tiempoRestante=Math.max(0,st._timerInitial-elapsed);
     if(st.tiempoRestante<=0){clearInterval(_tim[id]);st.tiempoRestante=0;st.fase='RealizandoSerie';renderCard(id);updHdr();vib([100,50,100]);toast('Tiempo! A por la siguiente serie');}
     else{updTimerOnly(id);}
-  },1000);
+  },500);
 }
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden) return;
+  Object.keys(_est).forEach(function(id){
+    var st=_est[id];
+    if(st&&st.fase==='Descansando'&&st._timerStart){
+      var elapsed=Math.floor((Date.now()-st._timerStart)/1000);
+      st.tiempoRestante=Math.max(0,st._timerInitial-elapsed);
+      if(st.tiempoRestante<=0){
+        clearInterval(_tim[id]);st.tiempoRestante=0;st.fase='RealizandoSerie';
+        renderCard(id);updHdr();vib([100,50,100]);toast('Tiempo! A por la siguiente serie');
+      } else {
+        renderCard(id);
+      }
+    }
+  });
+});
 function renderHist(){
   var c=document.getElementById('history-container');c.innerHTML='';
   var withData=_ejs.filter(function(e){return _recCache[e.id]&&_recCache[e.id].length>0;});
@@ -1401,6 +1543,31 @@ function spawnConfetti(){
       },i*40);
     })(i);
   }
+}
+
+// ── iOS INSTALL BANNER ──
+function detectIos(){
+  var ua=navigator.userAgent;
+  var isIos=/iphone|ipad|ipod/i.test(ua);
+  var isStandalone=('standalone' in navigator)&&navigator.standalone;
+  var isSafari=/safari/i.test(ua)&&!/crios|fxios|opios/i.test(ua);
+  if(isIos&&!isStandalone){
+    var row=document.getElementById('ios-install-row');
+    if(row) row.style.display='';
+    if(isSafari){
+      var shown=false;
+      try{shown=!!localStorage.getItem('gt_ios_banner_shown');}catch(e){}
+      if(!shown) setTimeout(showIosBanner,2000);
+    }
+  }
+}
+function showIosBanner(){
+  var b=document.getElementById('ios-banner');
+  if(b){b.style.display='block';try{localStorage.setItem('gt_ios_banner_shown','1');}catch(e){}}
+}
+function closeIosBanner(){
+  var b=document.getElementById('ios-banner');
+  if(b) b.style.display='none';
 }
 
 closeCel();
