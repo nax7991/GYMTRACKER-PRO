@@ -833,7 +833,26 @@ auth.onAuthStateChanged(function(user){
   if(_studentMode) return;
   _user=user;
   if(user){
-    showAdmin();
+    if(user.email === SUPER_ADMIN_EMAIL){
+      showAdmin();
+      return;
+    }
+    FS.collection('trainers').where('trainerId','==',user.uid).get().then(function(snap){
+      if(snap.empty){
+        var nombre = user.displayName || user.email.split('@')[0];
+        return FS.collection('trainers').doc(user.uid).set({
+          nombre: nombre,
+          email: user.email,
+          trainerId: user.uid,
+          createdAt: Date.now(),
+          createdBy: 'firebase-console'
+        });
+      }
+    }).then(function(){
+      showAdmin();
+    }).catch(function(){
+      showAdmin();
+    });
   } else {
     var remembered=localStorage.getItem('gt_email');
     if(remembered){
