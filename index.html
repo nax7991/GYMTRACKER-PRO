@@ -779,6 +779,15 @@ function init(){
   var params=new URLSearchParams(location.search);
   var code=params.get('c');
 
+  if(code){
+    var nombreRaw=decodeURIComponent(params.get('n')||'');
+    var pParam=params.get('p')||'';
+    var planIds=pParam.split(',').filter(Boolean);
+    if(nombreRaw&&planIds.length){
+      try{localStorage.setItem('gt_student',JSON.stringify({code:code,nombre:nombreRaw,planes:planIds}));}catch(e){}
+    }
+  }
+
   if(!code){
     try{
       var saved=localStorage.getItem('gt_student');
