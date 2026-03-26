@@ -349,7 +349,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   </div>
 </div>
 
-<!-- ======== SCREEN: SETUP ======== -->
+<!-- ======== SCREEN: SETUP (solo accesible desde super-admin) ======== -->
 <div class="screen" id="screen-setup">
   <div class="center-wrap">
     <div class="cs-logo">🏋️</div>
@@ -390,7 +390,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         <input class="field-input" id="login-pass" type="password" placeholder="Tu contraseña" onkeydown="if(event.key==='Enter')doLogin()"/>
       </div>
       <button class="btn btn-green" onclick="doLogin()">ENTRAR ›</button>
-      <button class="btn btn-outline" onclick="showScreen('screen-setup')">Crear cuenta nueva</button>
     </div>
   </div>
 </div>
@@ -559,6 +558,27 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div class="th-title" id="th-title">Historial</div>
   </div>
   <div class="th-scroll" id="th-scroll"></div>
+</div>
+
+<!-- ======== MODAL: NUEVO ENTRENADOR (super-admin) ======== -->
+<div class="modal-overlay" id="modal-new-trainer" onclick="closeNewTrainerModalOut(event)">
+  <div class="modal-sheet">
+    <div class="modal-title">➕ Nuevo Entrenador</div>
+    <div class="field-group">
+      <div class="field-label">Nombre completo</div>
+      <input class="field-input" id="nt-nombre" type="text" placeholder="Ej: Carlos Pérez" autocomplete="off"/>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Email</div>
+      <input class="field-input" id="nt-email" type="email" placeholder="entrenador@email.com" autocomplete="off"/>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Contraseña temporal</div>
+      <input class="field-input" id="nt-pass" type="text" placeholder="Mínimo 6 caracteres" autocomplete="off"/>
+    </div>
+    <button class="btn btn-green" id="nt-save-btn" onclick="createTrainerAccount()">CREAR ENTRENADOR ›</button>
+    <button class="btn btn-outline" onclick="closeNewTrainerModal()">Cancelar</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1004,9 +1024,61 @@ function switchAdminTab(tab){
     btn.textContent='+ NUEVA RUTINA'; btn.onclick=function(){openRoutineBuilder(null);}; footer.style.display='';
     renderRoutines();
   } else if(tab==='superadmin'){
-    footer.style.display='none';
+    btn.textContent='+ NUEVO ENTRENADOR'; btn.onclick=openNewTrainerModal; footer.style.display='';
     renderSuperAdmin();
   }
+}
+function openNewTrainerModal(){
+  document.getElementById('nt-nombre').value='';
+  document.getElementById('nt-email').value='';
+  document.getElementById('nt-pass').value='';
+  document.getElementById('modal-new-trainer').classList.add('open');
+}
+function closeNewTrainerModal(){
+  document.getElementById('modal-new-trainer').classList.remove('open');
+}
+function closeNewTrainerModalOut(e){
+  if(e.target.id==='modal-new-trainer') closeNewTrainerModal();
+}
+function createTrainerAccount(){
+  var nombre=document.getElementById('nt-nombre').value.trim();
+  var email=document.getElementById('nt-email').value.trim();
+  var pass=document.getElementById('nt-pass').value.trim();
+  if(!nombre){toast('Ingresá el nombre del entrenador');return;}
+  if(!email){toast('Ingresá el email');return;}
+  if(pass.length<6){toast('La contraseña necesita al menos 6 caracteres');return;}
+  var btn=document.getElementById('nt-save-btn');
+  btn.textContent='Creando...'; btn.disabled=true;
+  var secondaryApp;
+  try{
+    secondaryApp=firebase.initializeApp(firebase.app().options,'secondary-'+Date.now());
+  }catch(e){
+    secondaryApp=firebase.app('secondary-'+Date.now());
+  }
+  var secondaryAuth=secondaryApp.auth();
+  secondaryAuth.createUserWithEmailAndPassword(email,pass)
+    .then(function(cred){
+      return FS.collection('trainers').doc(cred.user.uid).set({
+        nombre:nombre, email:email, createdAt:Date.now(), createdBy:'superadmin'
+      }).then(function(){
+        return secondaryAuth.signOut();
+      }).then(function(){
+        secondaryApp.delete().catch(function(){});
+      });
+    })
+    .then(function(){
+      btn.textContent='CREAR ENTRENADOR ›'; btn.disabled=false;
+      closeNewTrainerModal();
+      toast('Entrenador "'+nombre+'" creado! Email: '+email+' · Pass: '+pass, 5000);
+      renderSuperAdmin();
+    })
+    .catch(function(e){
+      btn.textContent='CREAR ENTRENADOR ›'; btn.disabled=false;
+      var msg=e.code==='auth/email-already-in-use'?'Ese email ya tiene cuenta':
+              e.code==='auth/invalid-email'?'Email no válido':
+              e.code==='auth/weak-password'?'Contraseña muy débil':'Error: '+e.message;
+      toast(msg,4000);
+    });
 }
 function renderSuperAdmin(){
   var list=document.getElementById('admin-list');
@@ -1027,7 +1099,10 @@ function renderSuperAdmin(){
       var summary=document.createElement('div');
       summary.className='sa-summary';
       summary.innerHTML=
-        '<div class="sa-summary-title">📊 Resumen de facturación</div>'+
+        '<div style="display:flex;align-items:center;justify-content:space-between;">'+
+          '<div class="sa-summary-title">📊 Resumen de facturación</div>'+
+          '<button onclick="renderSuperAdmin()" style="background:transparent;border:1px solid #ffffff20;color:var(--text-dim);border-radius:8px;padding:5px 10px;font-size:0.72rem;cursor:pointer;">🔄 Actualizar</button>'+
+        '</div>'+
         '<div class="sa-summary-stats">'+
           '<div class="sa-stat"><div class="sa-stat-val" id="sa-total-trainers">'+trainers.length+'</div><div class="sa-stat-lbl">Entrenadores</div></div>'+
           '<div class="sa-stat"><div class="sa-stat-val" id="sa-total-alumnos">'+totalAlumnos+'</div><div class="sa-stat-lbl">Alumnos activos</div></div>'+
@@ -1036,7 +1111,7 @@ function renderSuperAdmin(){
         '<div class="sa-price-row">'+
           '<span class="sa-price-lbl">💲 Precio por alumno/mes:</span>'+
           '<input class="sa-price-input" id="sa-price-inp" type="number" min="0" step="100" value="'+savedPrice+'" placeholder="0"/>'+
-          '<span class="sa-price-cur">ARS</span>'+
+          '<span class="sa-price-cur">CLP</span>'+
         '</div>';
       list.appendChild(summary);
       document.getElementById('sa-price-inp').addEventListener('input',function(){
@@ -1063,22 +1138,26 @@ function renderSuperAdmin(){
         if(revEl) revEl.textContent='$'+((p*total)||0).toLocaleString('es');
       });
       trainers.forEach(function(tr){
-        var t=tr.data; var cnt=tr.count;
+        var t=tr.data; var cnt=tr.count; var tid=tr.id;
         var ini=(t.nombre||'?')[0].toUpperCase();
         var p=savedPrice; var bill=p*cnt;
         var billHtml= cnt>0&&p>0
           ? '<div class="sa-bill-amount">$'+bill.toLocaleString('es')+'</div><div class="sa-bill-label">/mes</div>'
           : '<div class="sa-bill-zero">'+(cnt===0?'Sin alumnos':'—')+'</div>';
+        var isMe=_user&&_user.email===t.email;
         var div=document.createElement('div');
         div.className='sa-trainer-card'+(cnt>0?' sa-paying':'');
         div.innerHTML=
           '<div class="sa-avatar">'+ini+'</div>'+
           '<div class="sa-info">'+
-            '<div class="sa-name">'+t.nombre+'</div>'+
+            '<div class="sa-name">'+t.nombre+(isMe?' 👑':'')+'</div>'+
             '<div class="sa-email">'+t.email+'</div>'+
             '<div class="sa-count" data-sa-count="'+cnt+'"><strong>'+cnt+'</strong> alumno'+(cnt!==1?'s activos':'activo')+'</div>'+
           '</div>'+
-          '<div class="sa-bill">'+billHtml+'</div>';
+          '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">'+
+            '<div class="sa-bill">'+billHtml+'</div>'+
+            (!isMe?'<button onclick="deleteTrainer(\''+tid+'\',\''+t.nombre+'\')" style="background:transparent;border:1px solid #ef535040;color:var(--danger);border-radius:6px;padding:3px 8px;font-size:0.65rem;cursor:pointer;">🗑️ Eliminar</button>':'')+
+          '</div>';
         list.appendChild(div);
       });
     }).catch(function(){
@@ -1087,6 +1166,15 @@ function renderSuperAdmin(){
   }).catch(function(){
     list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar entrenadores.</div>';
   });
+}
+function deleteTrainer(tid,nombre){
+  if(!confirm('Eliminar al entrenador "'+nombre+'" del sistema?\n\nSus alumnos quedarán sin entrenador asignado.')) return;
+  FS.collection('trainers').doc(tid).delete()
+    .then(function(){
+      toast('"'+nombre+'" eliminado del sistema',3000);
+      renderSuperAdmin();
+    })
+    .catch(function(){toast('Error al eliminar. Verificá tu conexión.');});
 }
 function getPlanLabel(p){
   if(PLANES[p]) return PLANES[p].label;
