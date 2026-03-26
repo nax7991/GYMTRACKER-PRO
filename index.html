@@ -24,12 +24,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;height:100%;overflow:hidden;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;user-select:none;}
-
-/* SCREENS */
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
 .screen.active{display:flex;}
-
-/* CENTER SCREENS */
 .center-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;gap:14px;overflow-y:auto;}
 .cs-logo{font-size:3rem;margin-bottom:4px;}
 .cs-title{font-size:1.5rem;font-weight:800;text-align:center;}
@@ -39,8 +35,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .field-label{font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:600;}
 .field-input{width:100%;background:var(--surface2);border:1px solid #ffffff15;border-radius:var(--radius-sm);color:var(--text);font-size:1rem;padding:12px 14px;outline:none;transition:border-color var(--trans);user-select:text;}
 .field-input:focus{border-color:var(--accent);}
-
-/* BUTTONS */
 .btn{border:none;cursor:pointer;border-radius:var(--radius-sm);font-weight:700;padding:14px;font-size:0.88rem;transition:opacity var(--trans),transform 0.1s;letter-spacing:0.4px;width:100%;}
 .btn:active{opacity:0.8;transform:scale(0.98);}
 .btn-green{background:var(--accent);color:#000;}
@@ -50,8 +44,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .btn-outline-blue{background:var(--rest-bg);border:1px solid var(--rest-accent);color:var(--rest-accent);}
 .btn-danger-soft{background:#2a1515;color:var(--danger);border:1px solid #ef535030;}
 .btn-sm{padding:8px 14px;font-size:0.78rem;width:auto;}
-
-/* ADMIN */
 .admin-top{background:var(--surface);border-bottom:1px solid #ffffff08;padding:16px 16px 12px;flex-shrink:0;}
 .admin-top-row{display:flex;align-items:center;justify-content:space-between;}
 .admin-title{font-size:1.1rem;font-weight:800;}
@@ -68,8 +60,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .ac-actions{display:flex;gap:8px;}
 .empty-admin{text-align:center;padding:48px 24px;color:var(--text-dim);font-size:0.85rem;line-height:1.7;}
 .empty-admin .ei{font-size:2.5rem;margin-bottom:12px;}
-
-/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:#000000cc;z-index:500;display:none;align-items:flex-end;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:500px;padding:20px 20px calc(20px + var(--safe-bottom));display:flex;flex-direction:column;gap:14px;}
@@ -78,8 +68,21 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .plan-opt{background:var(--surface2);border:2px solid transparent;border-radius:var(--radius-sm);padding:12px 6px;text-align:center;cursor:pointer;transition:all var(--trans);font-size:0.76rem;font-weight:700;color:var(--text-dim);line-height:1.4;}
 .plan-opt .poi{font-size:1.4rem;display:block;margin-bottom:4px;}
 .plan-opt.sel{border-color:var(--accent);color:var(--accent);background:#003d1f44;}
-
-/* STUDENT APP */
+.plan-row{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;flex-shrink:0;background:var(--surface);border-bottom:1px solid #ffffff08;scrollbar-width:none;}
+.plan-row::-webkit-scrollbar{display:none;}
+.plan-chip{background:var(--surface2);border:2px solid transparent;border-radius:20px;padding:7px 16px;font-size:0.76rem;font-weight:700;color:var(--text-dim);white-space:nowrap;cursor:pointer;transition:all var(--trans);}
+.plan-chip.active{background:var(--accent);border-color:var(--accent);color:#000;}
+.cel-overlay{position:fixed;inset:0;z-index:900;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000000f2;}
+.cel-overlay.show{display:flex;}
+.cel-inner{display:flex;flex-direction:column;align-items:center;gap:12px;animation:cel-in 0.55s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes cel-in{from{transform:scale(0.4);opacity:0}to{transform:scale(1);opacity:1}}
+.cel-emoji{font-size:5rem;animation:cel-pulse 0.7s infinite alternate;}
+@keyframes cel-pulse{from{transform:scale(1) rotate(-6deg)}to{transform:scale(1.12) rotate(6deg)}}
+.cel-title{font-size:1.7rem;font-weight:800;color:var(--accent);text-align:center;line-height:1.2;}
+.cel-msg{font-size:0.9rem;color:var(--text-dim);text-align:center;padding:0 28px;line-height:1.7;}
+.cel-sub{font-size:0.75rem;color:var(--text-muted);text-align:center;}
+.confetti-p{position:fixed;border-radius:3px;animation:conf-fall linear forwards;pointer-events:none;}
+@keyframes conf-fall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(900deg);opacity:0}}
 .view{display:none;flex-direction:column;height:100%;overflow:hidden;}
 .view.active{display:flex;}
 .top-bar{background:var(--surface);padding:14px 16px 10px;border-bottom:1px solid #ffffff08;flex-shrink:0;}
@@ -98,8 +101,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .nav-item{flex:1;border:none;background:transparent;color:var(--text-muted);padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:0.62rem;font-weight:600;cursor:pointer;transition:color var(--trans);letter-spacing:0.3px;}
 .nav-item .ni{font-size:1.3rem;}
 .nav-item.active{color:var(--accent);}
-
-/* CARDS */
 .card{background:var(--surface);border-radius:var(--radius);border:1px solid #ffffff08;overflow:hidden;transition:border-color var(--trans),box-shadow var(--trans);}
 .s-realizando{border-color:var(--accent);box-shadow:0 0 20px #00e67622;}
 .s-descansando{border-color:var(--rest-accent);box-shadow:0 0 20px #40c4ff22;background:var(--rest-bg);}
@@ -144,8 +145,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .rest-badge{display:inline-block;font-size:0.62rem;padding:1px 6px;border-radius:20px;font-weight:700;letter-spacing:0.3px;margin-left:4px;}
 .rest-badge.compuesto{background:#1a3a2a;color:#00e676;}
 .rest-badge.aislado{background:#1a2a3a;color:#40c4ff;}
-
-/* HISTORY */
 .hist-section{padding:14px 14px 0;}
 .hist-card{background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;margin-bottom:8px;overflow:hidden;}
 .hist-card-header{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;}
@@ -157,8 +156,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .hist-row{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--text-dim);padding:5px 0;border-bottom:1px solid #ffffff06;}
 .hist-row:last-child{border-bottom:none;}
 .hist-row .hw{color:var(--accent);font-weight:700;font-size:0.82rem;}
-
-/* SETTINGS */
 .settings-list{padding:16px 14px;display:flex;flex-direction:column;gap:8px;}
 .set-section-label{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);padding:8px 4px 2px;}
 .set-row{display:flex;align-items:center;background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;padding:14px 16px;gap:12px;cursor:pointer;transition:background var(--trans);}
@@ -168,8 +165,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .set-name{font-size:0.88rem;font-weight:600;}
 .set-sub{font-size:0.72rem;color:var(--text-dim);margin-top:2px;}
 .set-row.danger .set-name{color:var(--danger);}
-
-/* MISC */
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 24px;gap:10px;text-align:center;}
 .empty-state .ei{font-size:3rem;}
 .empty-state .et{font-size:0.95rem;font-weight:700;color:var(--text-dim);}
@@ -187,17 +182,22 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="center-wrap">
     <div class="cs-logo">🏋️</div>
     <div class="cs-title">GymTracker Pro</div>
-    <div class="cs-sub">Primera vez — configurá tu panel de entrenador</div>
+    <div class="cs-sub">Creá tu cuenta de entrenador — es gratis</div>
     <div class="cs-card">
       <div class="field-group">
         <div class="field-label">Tu nombre</div>
-        <input class="field-input" id="setup-nombre" type="text" placeholder="Ej: Martín" autocomplete="off"/>
+        <input class="field-input" id="setup-nombre" type="text" placeholder="Ej: Martín" autocomplete="name"/>
       </div>
       <div class="field-group">
-        <div class="field-label">Contraseña del panel</div>
-        <input class="field-input" id="setup-pass" type="password" placeholder="Mínimo 4 caracteres" onkeydown="if(event.key==='Enter')doSetup()"/>
+        <div class="field-label">Email</div>
+        <input class="field-input" id="setup-email" type="email" placeholder="tu@email.com" autocomplete="email"/>
       </div>
-      <button class="btn btn-green" onclick="doSetup()">CREAR PANEL ›</button>
+      <div class="field-group">
+        <div class="field-label">Contraseña (mínimo 6 caracteres)</div>
+        <input class="field-input" id="setup-pass" type="password" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doSetup()"/>
+      </div>
+      <button class="btn btn-green" onclick="doSetup()">CREAR CUENTA ›</button>
+      <button class="btn btn-outline" onclick="showScreen('screen-login')">Ya tengo cuenta — Iniciar sesión</button>
     </div>
   </div>
 </div>
@@ -207,13 +207,18 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="center-wrap">
     <div class="cs-logo">🔐</div>
     <div class="cs-title" id="login-title">Panel del Entrenador</div>
-    <div class="cs-sub">Ingresá tu contraseña para acceder</div>
+    <div class="cs-sub">Ingresá tus datos para acceder</div>
     <div class="cs-card">
+      <div class="field-group">
+        <div class="field-label">Email</div>
+        <input class="field-input" id="login-email" type="email" placeholder="tu@email.com" autocomplete="email"/>
+      </div>
       <div class="field-group">
         <div class="field-label">Contraseña</div>
         <input class="field-input" id="login-pass" type="password" placeholder="Tu contraseña" onkeydown="if(event.key==='Enter')doLogin()"/>
       </div>
       <button class="btn btn-green" onclick="doLogin()">ENTRAR ›</button>
+      <button class="btn btn-outline" onclick="showScreen('screen-setup')">Crear cuenta nueva</button>
     </div>
   </div>
 </div>
@@ -237,7 +242,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <!-- ======== SCREEN: STUDENT ======== -->
 <div class="screen" id="screen-student">
-
   <div class="view active" id="view-workout">
     <div class="top-bar">
       <h2>💪 <span id="st-nombre-hdr" style="color:var(--accent)">GymTracker</span></h2>
@@ -248,9 +252,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       </div>
       <div class="prog-dots" id="prog-dots"></div>
     </div>
+    <div class="plan-row" id="st-plan-row" style="display:none"></div>
     <div class="scroll-area"><div class="cards-wrap" id="cards-container"></div></div>
   </div>
-
   <div class="view" id="view-history">
     <div class="top-bar">
       <h2>📋 Historial</h2>
@@ -258,7 +262,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     </div>
     <div class="scroll-area" id="history-container"></div>
   </div>
-
   <div class="view" id="view-settings">
     <div class="top-bar">
       <h2>⚙️ Ajustes</h2>
@@ -279,7 +282,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           <span class="set-icon">ℹ️</span>
           <div class="set-info">
             <div class="set-name">GymTracker Pro</div>
-            <div class="set-sub">Versión 2.0 · Datos guardados localmente</div>
+            <div class="set-sub">Versión 3.0 · Datos en la nube ☁️</div>
           </div>
         </div>
         <div class="set-row">
@@ -299,7 +302,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       </div>
     </div>
   </div>
-
   <nav class="nav-bar">
     <button class="nav-item active" id="nav-workout" onclick="goTo('workout')"><span class="ni">🏋️</span><span>Entrena</span></button>
     <button class="nav-item" id="nav-history" onclick="goTo('history')"><span class="ni">📋</span><span>Historial</span></button>
@@ -316,9 +318,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <input class="field-input" id="modal-nombre" type="text" placeholder="Ej: Lucas" autocomplete="off"/>
     </div>
     <div class="field-group">
-      <div class="field-label">Rutina asignada</div>
+      <div class="field-label">Días asignados (podés elegir varios)</div>
       <div class="plan-grid">
-        <div class="plan-opt sel" data-p="empuje" onclick="selOpt(this)"><span class="poi">🔥</span>Miércoles<br>Empuje</div>
+        <div class="plan-opt" data-p="empuje" onclick="selOpt(this)"><span class="poi">🔥</span>Miércoles<br>Empuje</div>
         <div class="plan-opt" data-p="pierna" onclick="selOpt(this)"><span class="poi">🦵</span>Jueves<br>Pierna</div>
         <div class="plan-opt" data-p="jalon" onclick="selOpt(this)"><span class="poi">💪</span>Viernes<br>Jalón</div>
       </div>
@@ -328,11 +330,44 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   </div>
 </div>
 
+<!-- ======== CELEBRACIÓN ======== -->
+<div class="cel-overlay" id="cel-overlay" onclick="closeCel()">
+  <div class="cel-inner">
+    <div class="cel-emoji" id="cel-emoji">🏆</div>
+    <div class="cel-title">¡SESIÓN COMPLETADA!</div>
+    <div class="cel-msg" id="cel-msg">Mensaje</div>
+    <div class="cel-sub">Tocá para cerrar</div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
 'use strict';
 
+// ═══════════════════════════════════════════════════════════════
+//  FIREBASE CONFIG — Reemplazá con tu configuración
+//  Ver instrucciones abajo: buscá "PASO 1"
+// ═══════════════════════════════════════════════════════════════
+var FIREBASE_CONFIG = {
+  apiKey:            "REEMPLAZA_API_KEY",
+  authDomain:        "REEMPLAZA_PROYECTO.firebaseapp.com",
+  projectId:         "REEMPLAZA_PROYECTO_ID",
+  storageBucket:     "REEMPLAZA_PROYECTO.firebasestorage.app",
+  messagingSenderId: "REEMPLAZA_SENDER_ID",
+  appId:             "REEMPLAZA_APP_ID"
+};
+
+firebase.initializeApp(FIREBASE_CONFIG);
+var auth = firebase.auth();
+var FS   = firebase.firestore();
+FS.enablePersistence({synchronizeTabs:true}).catch(function(){});
+
+// ── PLANES ──
 var PLANES = {
   empuje: {
     label: 'Miércoles — Empuje',
@@ -369,22 +404,6 @@ var PLANES = {
   }
 };
 
-// ── CONFIG ──
-var CFG_KEY = 'gt_config';
-function getCfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY)||'null'); } catch(e){ return null; } }
-function saveCfg(c) { localStorage.setItem(CFG_KEY, JSON.stringify(c)); }
-
-// ── RECORDS (por alumno) ──
-function recKey(code) { return 'gt_rec_'+code; }
-var DB = {
-  get: function(code)          { try{return JSON.parse(localStorage.getItem(recKey(code))||'{}');}catch(e){return{};} },
-  save: function(code,db)      { localStorage.setItem(recKey(code),JSON.stringify(db)); },
-  addReg: function(code,id,s,p){ var db=this.get(code); if(!db[id])db[id]=[]; db[id].push({ts:Date.now(),serie:s,peso:parseFloat(p)||0}); this.save(code,db); },
-  getHist: function(code,id,n) { n=n||30; var db=this.get(code); return (db[id]||[]).slice(-n).reverse(); },
-  lastPeso: function(code,id)  { var db=this.get(code); var r=db[id]; return (r&&r.length)?r[r.length-1].peso:null; },
-  clear: function(code)        { localStorage.removeItem(recKey(code)); }
-};
-
 // ── UTILS ──
 function fmt(s){ var m=Math.floor(s/60),x=s%60; return m>0?m+':'+(x<10?'0':'')+x:''+s; }
 function toast(msg,ms){
@@ -394,100 +413,197 @@ function toast(msg,ms){
 }
 function vib(p){ try{navigator.vibrate&&navigator.vibrate(p);}catch(e){} }
 function randCode(){ return Math.random().toString(36).substr(2,6).toUpperCase(); }
-
-// ── ROUTER ──
-function init(){
-  var params=new URLSearchParams(location.search);
-  var code=params.get('c');
-  if(code){
-    var nombre=decodeURIComponent(params.get('n')||'');
-    var plan=params.get('p')||'';
-    if(nombre && PLANES[plan]){
-      startStudent(code,{nombre:nombre,plan:plan});
-    } else {
-      var cfg=getCfg();
-      if(!cfg||!cfg.alumnos||!cfg.alumnos[code]){
-        showScreen('screen-setup');
-        document.getElementById('screen-setup').innerHTML='<div class="center-wrap"><div class="cs-logo">❌</div><div class="cs-title">Link no válido</div><div class="cs-sub">Este enlace no existe o fue eliminado.<br>Pedile uno nuevo a tu entrenador.</div></div>';
-        return;
-      }
-      startStudent(code,cfg.alumnos[code]);
-    }
-  } else {
-    var cfg=getCfg();
-    if(!cfg||!cfg.password){ showScreen('screen-setup'); }
-    else { showScreen('screen-login'); if(cfg.nombre) document.getElementById('login-title').textContent='Hola, '+cfg.nombre+' 👋'; }
-  }
-}
-
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById(id).classList.add('active');
+}
+function showBlocked(){
+  showScreen('screen-setup');
+  document.getElementById('screen-setup').innerHTML='<div class="center-wrap"><div class="cs-logo">🚫</div><div class="cs-title">Acceso desactivado</div><div class="cs-sub">Tu entrenador desactivó este enlace.<br>Pedile uno nuevo para continuar.</div></div>';
+}
+function showInvalidLink(){
+  showScreen('screen-setup');
+  document.getElementById('screen-setup').innerHTML='<div class="center-wrap"><div class="cs-logo">❌</div><div class="cs-title">Link no válido</div><div class="cs-sub">Este enlace no existe o fue eliminado.<br>Pedile uno nuevo a tu entrenador.</div></div>';
+}
+
+// ── RECORDS CACHE (Firestore, cargado al inicio) ──
+var _recCache = {};
+var DB = {
+  load: function(code){
+    return FS.collection('records').doc(code).get()
+      .then(function(doc){ _recCache = doc.exists ? doc.data() : {}; })
+      .catch(function(){ _recCache = {}; });
+  },
+  addReg: function(code,id,s,p){
+    var val={ts:Date.now(),serie:s,peso:parseFloat(p)||0};
+    if(!_recCache[id]) _recCache[id]=[];
+    _recCache[id].push(val);
+    var upd={}; upd[id]=_recCache[id];
+    FS.collection('records').doc(code).set(upd,{merge:true}).catch(function(){});
+  },
+  getHist: function(code,id,n){ n=n||30; return (_recCache[id]||[]).slice(-n).reverse(); },
+  lastPeso: function(code,id){ var r=_recCache[id]; return (r&&r.length)?r[r.length-1].peso:null; },
+  clear: function(code){ _recCache={}; return FS.collection('records').doc(code).delete().catch(function(){}); }
+};
+
+// ── AUTH STATE LISTENER (solo trainer) ──
+var _user = null;
+auth.onAuthStateChanged(function(user){
+  var params=new URLSearchParams(location.search);
+  if(params.get('c')) return;
+  _user=user;
+  if(user){
+    showAdmin();
+  } else {
+    var remembered=localStorage.getItem('gt_email');
+    if(remembered){
+      showScreen('screen-login');
+      document.getElementById('login-email').value=remembered;
+      document.getElementById('login-title').textContent='Bienvenido de nuevo 👋';
+    } else {
+      showScreen('screen-setup');
+    }
+  }
+});
+
+// ── ROUTER (modo alumno) ──
+function init(){
+  var params=new URLSearchParams(location.search);
+  var code=params.get('c');
+  if(!code) return;
+  FS.collection('students').doc(code).get()
+    .then(function(doc){
+      if(doc.exists && doc.data().revoked){ showBlocked(); return; }
+      var nombre=decodeURIComponent(params.get('n')||'');
+      var pParam=params.get('p')||'';
+      var planes=pParam.split(',').filter(function(p){return PLANES[p];});
+      if(!nombre||!planes.length){ showInvalidLink(); return; }
+      startStudent(code,{nombre:nombre,planes:planes});
+    })
+    .catch(function(){
+      var nombre=decodeURIComponent(params.get('n')||'');
+      var pParam=params.get('p')||'';
+      var planes=pParam.split(',').filter(function(p){return PLANES[p];});
+      if(!nombre||!planes.length){ showInvalidLink(); return; }
+      startStudent(code,{nombre:nombre,planes:planes});
+    });
 }
 
 // ── SETUP ──
 function doSetup(){
   var nombre=document.getElementById('setup-nombre').value.trim();
+  var email=document.getElementById('setup-email').value.trim();
   var pass=document.getElementById('setup-pass').value;
   if(!nombre){toast('Ingresá tu nombre');return;}
-  if(pass.length<4){toast('La contraseña necesita al menos 4 caracteres');return;}
-  saveCfg({nombre:nombre,password:pass,alumnos:{}});
-  showAdmin();
+  if(!email){toast('Ingresá tu email');return;}
+  if(pass.length<6){toast('La contraseña necesita al menos 6 caracteres');return;}
+  var btn=document.querySelector('#screen-setup .btn-green');
+  btn.textContent='Creando cuenta...'; btn.disabled=true;
+  auth.createUserWithEmailAndPassword(email,pass)
+    .then(function(cred){
+      _user=cred.user;
+      localStorage.setItem('gt_email',email);
+      localStorage.setItem('gt_nombre',nombre);
+      return FS.collection('trainers').doc(cred.user.uid).set({nombre:nombre,email:email,createdAt:Date.now()});
+    })
+    .then(function(){ btn.textContent='CREAR CUENTA ›'; btn.disabled=false; showAdmin(); })
+    .catch(function(e){
+      btn.textContent='CREAR CUENTA ›'; btn.disabled=false;
+      var msg=e.code==='auth/email-already-in-use'?'Ese email ya tiene cuenta. Iniciá sesión.':
+              e.code==='auth/invalid-email'?'Email no válido':
+              e.code==='auth/weak-password'?'Contraseña muy débil':'Error: '+e.message;
+      toast(msg,3500);
+    });
 }
 
 // ── LOGIN ──
 function doLogin(){
+  var email=document.getElementById('login-email').value.trim();
   var pass=document.getElementById('login-pass').value;
-  var cfg=getCfg(); if(!cfg)return;
-  if(pass!==cfg.password){toast('Contraseña incorrecta');vib(150);return;}
-  document.getElementById('login-pass').value='';
-  showAdmin();
+  if(!email){toast('Ingresá tu email');return;}
+  if(!pass){toast('Ingresá tu contraseña');return;}
+  var btn=document.querySelector('#screen-login .btn-green');
+  btn.textContent='Entrando...'; btn.disabled=true;
+  auth.signInWithEmailAndPassword(email,pass)
+    .then(function(cred){
+      _user=cred.user;
+      localStorage.setItem('gt_email',email);
+      btn.textContent='ENTRAR ›'; btn.disabled=false;
+    })
+    .catch(function(e){
+      btn.textContent='ENTRAR ›'; btn.disabled=false;
+      var msg=(e.code==='auth/wrong-password'||e.code==='auth/user-not-found'||e.code==='auth/invalid-credential')
+              ?'Email o contraseña incorrectos':'Error: '+e.message;
+      toast(msg,3500); vib(150);
+    });
 }
-function doLogout(){ showScreen('screen-login'); }
+function doLogout(){
+  auth.signOut().then(function(){
+    var remembered=localStorage.getItem('gt_email');
+    showScreen('screen-login');
+    if(remembered) document.getElementById('login-email').value=remembered;
+  });
+}
 
 // ── ADMIN ──
 function showAdmin(){
   showScreen('screen-admin');
-  var cfg=getCfg();
-  if(cfg&&cfg.nombre) document.getElementById('admin-sub').textContent='Entrenador: '+cfg.nombre;
+  var nombre=localStorage.getItem('gt_nombre')||'';
+  if(nombre) document.getElementById('admin-sub').textContent='Entrenador: '+nombre;
+  if(_user){
+    FS.collection('trainers').doc(_user.uid).get().then(function(doc){
+      if(doc.exists&&doc.data().nombre){
+        document.getElementById('admin-sub').textContent='Entrenador: '+doc.data().nombre;
+        localStorage.setItem('gt_nombre',doc.data().nombre);
+      }
+    });
+  }
   renderAlumnos();
 }
-
 function renderAlumnos(){
-  var cfg=getCfg();
   var list=document.getElementById('admin-list');
-  var alumnos=(cfg&&cfg.alumnos)||{};
-  var keys=Object.keys(alumnos);
-  if(!keys.length){
-    list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>No hay alumnos todavía.<br>Agregá el primero con el botón de abajo.</div>';
-    return;
-  }
-  list.innerHTML='';
-  keys.forEach(function(code){
-    var a=alumnos[code];
-    var plan=PLANES[a.plan]||PLANES['empuje'];
-    var inicial=(a.nombre||'?')[0].toUpperCase();
-    var baseUrl=location.href.split('?')[0];
-    var link=baseUrl+'?c='+code+'&n='+encodeURIComponent(a.nombre)+'&p='+a.plan;
-    var div=document.createElement('div');
-    div.className='alumno-card';
-    div.innerHTML=
-      '<div class="ac-top">'+
-        '<div class="ac-avatar">'+inicial+'</div>'+
-        '<div class="ac-info">'+
-          '<div class="ac-name">'+a.nombre+'</div>'+
-          '<div class="ac-plan">'+plan.label+'</div>'+
-          '<div class="ac-code">Código: '+code+'</div>'+
-        '</div>'+
-      '</div>'+
-      '<div class="ac-actions">'+
-        '<button class="btn btn-blue btn-sm" style="flex:1" onclick="copyLink(\''+link+'\')">📋 Copiar link</button>'+
-        '<button class="btn btn-danger-soft btn-sm" onclick="deleteAlumno(\''+code+'\',\''+a.nombre+'\')">🗑️</button>'+
-      '</div>';
-    list.appendChild(div);
-  });
+  list.innerHTML='<div class="empty-admin"><div class="ei">⏳</div>Cargando...</div>';
+  if(!_user) return;
+  FS.collection('students')
+    .where('trainerId','==',_user.uid)
+    .where('revoked','==',false)
+    .get()
+    .then(function(snap){
+      if(snap.empty){
+        list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>No hay alumnos todavía.<br>Agregá el primero con el botón de abajo.</div>';
+        return;
+      }
+      list.innerHTML='';
+      snap.forEach(function(docSnap){
+        var code=docSnap.id;
+        var a=docSnap.data();
+        var planes=a.planes||['empuje'];
+        var planLabels=planes.map(function(p){return PLANES[p]?PLANES[p].label:p;}).join(' · ');
+        var inicial=(a.nombre||'?')[0].toUpperCase();
+        var baseUrl=location.href.split('?')[0];
+        var link=baseUrl+'?c='+code+'&n='+encodeURIComponent(a.nombre)+'&p='+planes.join(',');
+        var div=document.createElement('div');
+        div.className='alumno-card';
+        div.innerHTML=
+          '<div class="ac-top">'+
+            '<div class="ac-avatar">'+inicial+'</div>'+
+            '<div class="ac-info">'+
+              '<div class="ac-name">'+a.nombre+'</div>'+
+              '<div class="ac-plan">'+planLabels+'</div>'+
+              '<div class="ac-code">Código: '+code+'</div>'+
+            '</div>'+
+          '</div>'+
+          '<div class="ac-actions">'+
+            '<button class="btn btn-blue btn-sm" style="flex:1" onclick="copyLink(\''+link+'\')">📋 Copiar link</button>'+
+            '<button class="btn btn-danger-soft btn-sm" onclick="deleteAlumno(\''+code+'\',\''+a.nombre+'\')">🗑️</button>'+
+          '</div>';
+        list.appendChild(div);
+      });
+    })
+    .catch(function(){
+      list.innerHTML='<div class="empty-admin"><div class="ei">⚠️</div>Error al cargar. Verificá tu conexión.</div>';
+    });
 }
-
 function copyLink(link){
   if(navigator.clipboard){
     navigator.clipboard.writeText(link).then(function(){toast('Link copiado! Mandáselo por WhatsApp');vib(20);});
@@ -498,60 +614,94 @@ function copyLink(link){
     toast('Link copiado!'); vib(20);
   }
 }
-
 function deleteAlumno(code,nombre){
-  if(!confirm('Eliminar a '+nombre+'?\nSe borrarán todos sus datos.'))return;
-  var cfg=getCfg(); delete cfg.alumnos[code]; saveCfg(cfg);
-  DB.clear(code); renderAlumnos(); toast(nombre+' eliminado');
+  if(!confirm('Eliminar a '+nombre+'?\nSu link quedará bloqueado en TODOS los dispositivos de inmediato.'))return;
+  FS.collection('students').doc(code).update({revoked:true})
+    .then(function(){ return DB.clear(code); })
+    .then(function(){ renderAlumnos(); toast(nombre+' eliminado. Su link ya no funciona.',3000); })
+    .catch(function(){ toast('Error al eliminar. Verificá tu conexión.'); });
 }
 
 // ── MODAL ──
-var _selPlan='empuje';
+var _selPlans=[];
 function openModal(){
-  _selPlan='empuje';
+  _selPlans=[];
   document.getElementById('modal-nombre').value='';
-  document.querySelectorAll('.plan-opt').forEach(function(o){o.classList.toggle('sel',o.dataset.p==='empuje');});
+  document.querySelectorAll('.plan-opt').forEach(function(o){o.classList.remove('sel');});
   document.getElementById('modal-add').classList.add('open');
   setTimeout(function(){document.getElementById('modal-nombre').focus();},120);
 }
 function closeModal(){ document.getElementById('modal-add').classList.remove('open'); }
 function closeModalOut(e){ if(e.target===document.getElementById('modal-add'))closeModal(); }
-function selOpt(el){ _selPlan=el.dataset.p; document.querySelectorAll('.plan-opt').forEach(function(o){o.classList.toggle('sel',o===el);}); }
+function selOpt(el){
+  var p=el.dataset.p;
+  var idx=_selPlans.indexOf(p);
+  if(idx===-1){ _selPlans.push(p); el.classList.add('sel'); }
+  else { _selPlans.splice(idx,1); el.classList.remove('sel'); }
+}
 function addAlumno(){
   var nombre=document.getElementById('modal-nombre').value.trim();
   if(!nombre){toast('Ingresá el nombre del alumno');return;}
-  var cfg=getCfg();
+  if(!_selPlans.length){toast('Seleccioná al menos un día');return;}
+  if(!_user){toast('Sesión expirada. Iniciá sesión de nuevo.');return;}
   var code=randCode();
-  while(cfg.alumnos[code]) code=randCode();
-  cfg.alumnos[code]={nombre:nombre,plan:_selPlan};
-  saveCfg(cfg); closeModal(); renderAlumnos();
-  toast(nombre+' agregado correctamente!'); vib(20);
+  var btn=document.querySelector('#modal-add .btn-green');
+  btn.textContent='Guardando...'; btn.disabled=true;
+  FS.collection('students').doc(code).set({
+    trainerId:_user.uid,
+    nombre:nombre,
+    planes:_selPlans.slice(),
+    revoked:false,
+    createdAt:Date.now()
+  }).then(function(){
+    btn.textContent='AGREGAR'; btn.disabled=false;
+    closeModal(); renderAlumnos();
+    toast(nombre+' agregado!'); vib(20);
+  }).catch(function(){
+    btn.textContent='AGREGAR'; btn.disabled=false;
+    toast('Error al guardar. Verificá tu conexión.');
+  });
 }
 
 // ── STUDENT MODE ──
-var _sc=null;
-var _ejs=[];
-var _est={};
-var _tim={};
+var _sc=null, _ejs=[], _est={}, _tim={};
+var _alumnoPlanes=[], _planActivo='';
 
 function startStudent(code,alumno){
   _sc=code;
-  _ejs=PLANES[alumno.plan].ejercicios;
+  _alumnoPlanes=alumno.planes||[alumno.plan||'empuje'];
+  _planActivo=_alumnoPlanes[0];
   document.getElementById('st-nombre-hdr').textContent=alumno.nombre;
   document.getElementById('fecha-hoy').textContent=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
-  Object.keys(_tim).forEach(function(k){clearInterval(_tim[k]);}); _tim={};
-  initEst(); renderWV(); updHdr();
-  showScreen('screen-student');
+  DB.load(code).then(function(){
+    renderPlanRow();
+    cargarPlan(_planActivo);
+    showScreen('screen-student');
+  });
   if('serviceWorker' in navigator && location.protocol!=='file:'){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   }
 }
-
+function renderPlanRow(){
+  var row=document.getElementById('st-plan-row');
+  if(_alumnoPlanes.length<=1){row.style.display='none';return;}
+  row.style.display='flex';
+  row.innerHTML=_alumnoPlanes.map(function(p){
+    var pl=PLANES[p]; if(!pl)return '';
+    var active=p===_planActivo?'active':'';
+    return '<button class="plan-chip '+active+'" onclick="switchPlan(\''+p+'\')">'+(pl.label)+'</button>';
+  }).join('');
+}
+function switchPlan(plan){ if(plan===_planActivo)return; _planActivo=plan; cargarPlan(plan); }
+function cargarPlan(plan){
+  Object.keys(_tim).forEach(function(k){clearInterval(_tim[k]);}); _tim={};
+  _ejs=PLANES[plan].ejercicios;
+  renderPlanRow(); initEst(); renderWV(); updHdr();
+}
 function initEst(){
   _est={};
-  _ejs.forEach(function(e){ _est[e.id]={fase:'Seleccionando',serieActual:1,seriesHechas:[],tiempoRestante:0,tiempoMax:0}; });
+  _ejs.forEach(function(e){_est[e.id]={fase:'Seleccionando',serieActual:1,seriesHechas:[],tiempoRestante:0,tiempoMax:0};});
 }
-
 function goTo(view){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
   document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
@@ -559,17 +709,14 @@ function goTo(view){
   document.getElementById('nav-'+view).classList.add('active');
   if(view==='history') renderHist();
 }
-
 function renderWV(){
   var c=document.getElementById('cards-container'); c.innerHTML='';
-  _ejs.forEach(function(ej){ var d=document.createElement('div'); d.id='card-'+ej.id; d.className='card s-seleccionando'; c.appendChild(d); renderCard(ej.id); });
+  _ejs.forEach(function(ej){var d=document.createElement('div');d.id='card-'+ej.id;d.className='card s-seleccionando';c.appendChild(d);renderCard(ej.id);});
 }
-
 function restBadge(ej){
   var label=ej.descanso>=120?'2.5 min':(ej.descanso>=90?'1.5 min':'1 min');
   return '<span class="rest-badge '+(ej.tipo==='compuesto'?'compuesto':'aislado')+'">'+label+'</span>';
 }
-
 function renderCard(id){
   var ej=_ejs.filter(function(e){return e.id===id;})[0];
   var st=_est[id];
@@ -603,9 +750,8 @@ function renderCard(id){
     dots+wr+steppers+body+
     '<div class="notes-line"><span>💡</span><span>'+ej.notas+'</span></div>'+
     footer;
-  if(st.fase==='RealizandoSerie'&&lp!==null){ var inp=document.getElementById('w-'+id); if(inp)inp.value=lp; }
+  if(st.fase==='RealizandoSerie'&&lp!==null){var inp=document.getElementById('w-'+id);if(inp)inp.value=lp;}
 }
-
 function buildDots(ej,st){
   var h='';
   for(var i=1;i<=ej.series;i++){
@@ -618,14 +764,12 @@ function buildDots(ej,st){
   }
   return h;
 }
-
 function updTimerOnly(id){
   var st=_est[id]; var card=document.getElementById('card-'+id); if(!card)return;
   var rt=card.querySelector('.ring-time'); var fg=card.querySelector('.ring-fg');
   if(rt)rt.textContent=fmt(st.tiempoRestante);
   if(fg){var r=70,circ=2*Math.PI*r,prog=st.tiempoMax>0?st.tiempoRestante/st.tiempoMax:0;fg.style.strokeDashoffset=(circ*(1-prog)).toFixed(1);}
 }
-
 function updHdr(){
   var total=_ejs.length;
   var comp=_ejs.filter(function(e){return _est[e.id]&&_est[e.id].fase==='EjercicioCompletado';}).length;
@@ -637,10 +781,9 @@ function updHdr(){
   if(sc)sc.textContent=comp>0?comp+'/'+total:'';
   var pd=document.getElementById('prog-dots');
   if(pd){pd.innerHTML=_ejs.map(function(e){var f=_est[e.id]&&_est[e.id].fase;var c='pd';if(f==='EjercicioCompletado')c+=' done';else if(f==='RealizandoSerie'||f==='Descansando')c+=' active';return '<div class="'+c+'" title="'+e.nombre+'"></div>';}).join('');}
+  if(comp===total&&total>0) setTimeout(showCelebration,400);
 }
-
 function acIniciar(id){var st=_est[id];st.fase='RealizandoSerie';st.serieActual=1;st.seriesHechas=[];renderCard(id);updHdr();vib(10);toast('Comienza! Registra tu peso al terminar');}
-
 function acTerminar(id){
   var ej=_ejs.filter(function(e){return e.id===id;})[0];
   var st=_est[id];
@@ -656,11 +799,9 @@ function acTerminar(id){
     st.fase='EjercicioCompletado';renderCard(id);updHdr();vib([50,50,100]);toast('Ejercicio completado! Excelente trabajo');
   }
 }
-
 function acSaltar(id){clearInterval(_tim[id]);var st=_est[id];st.tiempoRestante=0;st.fase='RealizandoSerie';renderCard(id);updHdr();vib(15);toast('Descanso saltado - A por la siguiente!');}
 function acReiniciar(id){clearInterval(_tim[id]);var st=_est[id];st.fase='Seleccionando';st.serieActual=1;st.seriesHechas=[];st.tiempoRestante=0;renderCard(id);updHdr();}
 function adj(id,delta){var inp=document.getElementById('w-'+id);if(!inp)return;inp.value=Math.max(0,(parseFloat(inp.value)||0)+delta);}
-
 function startTimer(id){
   clearInterval(_tim[id]);
   _tim[id]=setInterval(function(){
@@ -670,11 +811,9 @@ function startTimer(id){
     else{updTimerOnly(id);}
   },1000);
 }
-
 function renderHist(){
   var c=document.getElementById('history-container');c.innerHTML='';
-  var db=DB.get(_sc);
-  var withData=_ejs.filter(function(e){return db[e.id]&&db[e.id].length>0;});
+  var withData=_ejs.filter(function(e){return _recCache[e.id]&&_recCache[e.id].length>0;});
   if(!withData.length){c.innerHTML='<div class="empty-state"><div class="ei">📋</div><div class="et">Sin historial aún</div><div class="es">Completa tu primera sesión para ver el progreso aquí</div></div>';return;}
   withData.forEach(function(ej){
     var hist=DB.getHist(_sc,ej.id,30);
@@ -684,13 +823,55 @@ function renderHist(){
     c.appendChild(sec);
   });
 }
-
 function toggleHist(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
-
 function clearData(){
-  if(confirm('Eliminar tu historial? Esta acción no se puede deshacer.')){DB.clear(_sc);toast('Historial eliminado');}
+  if(confirm('Eliminar tu historial? Esta acción no se puede deshacer.')){
+    DB.clear(_sc).then(function(){toast('Historial eliminado');});
+  }
 }
 
+// ── CELEBRACIÓN ──
+var _celShown=false;
+var CEL_MSGS=[
+  ['🏆','¡Sos una bestia! Otro día que la rutina te tiene miedo.'],
+  ['🔥','¡Completaste todo! Los músculos ya están creciendo mientras lees esto.'],
+  ['💪','¡Misión cumplida! Podés comer la mitad de lo que vas a comer ahora.'],
+  ['🦁','¡Rugiste hoy en el gym! Mañana el descanso es parte del plan.'],
+  ['🚀','¡Despegaste! Tu yo del futuro te lo va a agradecer.'],
+  ['🥇','¡Oro puro! Cada serie fue un depósito en el banco del músculo.']
+];
+function showCelebration(){
+  if(_celShown)return;
+  _celShown=true;
+  var r=CEL_MSGS[Math.floor(Math.random()*CEL_MSGS.length)];
+  document.getElementById('cel-emoji').textContent=r[0];
+  document.getElementById('cel-msg').textContent=r[1];
+  document.getElementById('cel-overlay').classList.add('show');
+  spawnConfetti();
+  vib([100,80,100,80,200]);
+}
+function closeCel(){
+  document.getElementById('cel-overlay').classList.remove('show');
+  _celShown=false;
+  document.querySelectorAll('.confetti-p').forEach(function(el){el.remove();});
+}
+function spawnConfetti(){
+  var colors=['#00e676','#40c4ff','#ffb300','#ef5350','#ce93d8','#fff'];
+  for(var i=0;i<60;i++){
+    (function(i){
+      setTimeout(function(){
+        var el=document.createElement('div');
+        el.className='confetti-p';
+        var size=Math.random()*10+6;
+        el.style.cssText='width:'+size+'px;height:'+size+'px;left:'+Math.random()*100+'vw;top:-20px;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-duration:'+(Math.random()*2+1.5)+'s;animation-delay:0s;border-radius:'+(Math.random()>0.5?'50%':'3px')+';';
+        document.body.appendChild(el);
+        setTimeout(function(){el.remove();},3800);
+      },i*40);
+    })(i);
+  }
+}
+
+closeCel();
 init();
 </script>
 </body>
