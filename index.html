@@ -1374,7 +1374,7 @@ function copyLink(link){
 }
 function deleteAlumno(code,nombre){
   if(!confirm('Eliminar a '+nombre+'?\nSu link quedará bloqueado en TODOS los dispositivos de inmediato.'))return;
-  FS.collection('students').doc(code).update({revoked:true})
+  FS.collection('students').doc(code).delete()
     .then(function(){ return DB.clear(code); })
     .then(function(){ renderAlumnos(); toast(nombre+' eliminado. Su link ya no funciona.',3000); })
     .catch(function(){ toast('Error al eliminar. Verificá tu conexión.'); });
