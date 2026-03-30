@@ -837,8 +837,15 @@ auth.onAuthStateChanged(function(user){
       showAdmin();
       return;
     }
-    FS.collection('trainers').where('trainerId','==',user.uid).get().then(function(snap){
-      if(snap.empty){
+    FS.collection('trainers').doc(user.uid).get().then(function(doc){
+      if(doc.exists && doc.data().revoked){
+        auth.signOut();
+        localStorage.removeItem('gt_email');
+        showScreen('screen-setup');
+        document.getElementById('screen-setup').innerHTML='<div class="center-wrap"><div class="cs-logo">🚫</div><div class="cs-title">Cuenta desactivada</div><div class="cs-sub">Tu cuenta de entrenador fue desactivada por el administrador.<br>Contactá al administrador para más información.</div></div>';
+        return;
+      }
+      if(!doc.exists){
         var nombre = user.displayName || user.email.split('@')[0];
         return FS.collection('trainers').doc(user.uid).set({
           nombre: nombre,
@@ -846,9 +853,8 @@ auth.onAuthStateChanged(function(user){
           trainerId: user.uid,
           createdAt: Date.now(),
           createdBy: 'firebase-console'
-        });
+        }).then(function(){ showAdmin(); });
       }
-    }).then(function(){
       showAdmin();
     }).catch(function(){
       showAdmin();
@@ -1107,7 +1113,11 @@ function renderSuperAdmin(){
   FS.collection('trainers').get().then(function(snap){
     if(snap.empty){list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>Sin entrenadores registrados.</div>';return;}
     var trainers=[];
-    snap.docs.forEach(function(d){trainers.push({id:d.id,data:d.data()});});
+    snap.docs.forEach(function(d){
+      var data=d.data();
+      if(!data.revoked) trainers.push({id:d.id,data:data});
+    });
+    if(!trainers.length){list.innerHTML='<div class="empty-admin"><div class="ei">👥</div>Sin entrenadores activos.</div>';return;}
     Promise.all(trainers.map(function(tr){
       return FS.collection('students').where('trainerId','==',tr.id).where('revoked','==',false).get()
         .then(function(ss){tr.count=ss.size;});
@@ -1171,11 +1181,11 @@ function renderSuperAdmin(){
           '<div class="sa-info">'+
             '<div class="sa-name">'+t.nombre+(isMe?' 👑':'')+'</div>'+
             '<div class="sa-email">'+t.email+'</div>'+
-            '<div class="sa-count" data-sa-count="'+cnt+'"><strong>'+cnt+'</strong> alumno'+(cnt!==1?'s activos':'activo')+'</div>'+
+            '<div class="sa-count" data-sa-count="'+cnt+'"><strong>'+cnt+'</strong> alumno'+(cnt!==1?'s activos':' activo')+'</div>'+
           '</div>'+
           '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">'+
             '<div class="sa-bill">'+billHtml+'</div>'+
-            (!isMe?'<button onclick="deleteTrainer(\''+tid+'\',\''+t.nombre+'\')" style="background:transparent;border:1px solid #ef535040;color:var(--danger);border-radius:6px;padding:3px 8px;font-size:0.65rem;cursor:pointer;">🗑️ Eliminar</button>':'')+
+            (!isMe?'<button onclick="deleteTrainer(\''+tid+'\',\''+t.nombre+'\')" style="background:transparent;border:1px solid #ef535040;color:var(--danger);border-radius:6px;padding:3px 8px;font-size:0.65rem;cursor:pointer;">🚫 Desactivar</button>':'')+
           '</div>';
         list.appendChild(div);
       });
@@ -1187,13 +1197,19 @@ function renderSuperAdmin(){
   });
 }
 function deleteTrainer(tid,nombre){
-  if(!confirm('Eliminar al entrenador "'+nombre+'" del sistema?\n\nSus alumnos quedarán sin entrenador asignado.')) return;
-  FS.collection('trainers').doc(tid).delete()
+  if(!confirm('Desactivar al entrenador "'+nombre+'"?\n\nSu cuenta quedará bloqueada y todos sus alumnos serán revocados.')) return;
+  FS.collection('students').where('trainerId','==',tid).get()
+    .then(function(snap){
+      var batch=FS.batch();
+      snap.docs.forEach(function(d){ batch.update(d.ref,{revoked:true}); });
+      batch.update(FS.collection('trainers').doc(tid),{revoked:true});
+      return batch.commit();
+    })
     .then(function(){
-      toast('"'+nombre+'" eliminado del sistema',3000);
+      toast('"'+nombre+'" desactivado y sus alumnos revocados',3500);
       renderSuperAdmin();
     })
-    .catch(function(){toast('Error al eliminar. Verificá tu conexión.');});
+    .catch(function(e){toast('Error al desactivar: '+e.message);});
 }
 function getPlanLabel(p){
   if(PLANES[p]) return PLANES[p].label;
