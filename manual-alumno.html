@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual del Alumno — GymTracker Pro</title>
+<style>
+:root {
+  --bg:#0f1117; --surface:#1a1d27; --surface2:#22263a; --surface3:#2a2f45;
+  --accent:#00e676; --accent-dark:#003d1f;
+  --rest-bg:#0a1929; --rest-accent:#40c4ff;
+  --text:#eceff1; --text-dim:#78909c; --text-muted:#455a64;
+  --warn:#ffb300; --danger:#ef5350;
+  --radius:16px; --radius-sm:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;padding:0 0 60px;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.hero{background:linear-gradient(135deg,#0a1929 0%,#1a1d27 100%);padding:48px 24px 40px;text-align:center;border-bottom:1px solid #ffffff10;}
+.hero-badge{display:inline-block;background:#0a1929;color:var(--rest-accent);font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px;border:1px solid #40c4ff30;}
+.hero h1{font-size:2rem;font-weight:900;margin-bottom:8px;}
+.hero h1 span{color:var(--accent);}
+.hero p{color:var(--text-dim);font-size:0.95rem;max-width:480px;margin:0 auto;}
+
+.toc{background:var(--surface);border:1px solid #ffffff10;border-radius:var(--radius);padding:20px 24px;margin:28px auto;max-width:700px;}
+.toc h2{font-size:0.8rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}
+.toc ol{padding-left:20px;display:flex;flex-direction:column;gap:6px;}
+.toc li a{font-size:0.9rem;color:var(--text);}
+.toc li a:hover{color:var(--accent);}
+
+.container{max-width:700px;margin:0 auto;padding:0 20px;}
+
+.section{margin-top:44px;}
+.section-tag{display:inline-block;background:var(--accent-dark);color:var(--accent);font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.section h2{font-size:1.4rem;font-weight:800;margin-bottom:14px;}
+
+.card{background:var(--surface);border:1px solid #ffffff10;border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.card p{font-size:0.88rem;color:var(--text-dim);line-height:1.65;}
+.card ul,.card ol{padding-left:20px;margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+.card li{font-size:0.88rem;color:var(--text-dim);}
+.card li strong{color:var(--text);}
+
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #ffffff08;}
+.step:last-child{border-bottom:none;}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--accent-dark);color:var(--accent);font-weight:800;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body h4{font-size:0.95rem;font-weight:700;margin-bottom:4px;}
+.step-body p{font-size:0.85rem;color:var(--text-dim);}
+
+.tip{background:#1a2a1a;border:1px solid #00e67630;border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px;font-size:0.84rem;color:#a5d6a7;display:flex;gap:10px;}
+.tip-icon{flex-shrink:0;font-size:1.1rem;}
+
+.warn-box{background:#1a1500;border:1px solid #ffb30030;border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px;font-size:0.84rem;color:#ffe082;display:flex;gap:10px;}
+
+.info-box{background:var(--rest-bg);border:1px solid #40c4ff20;border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px;font-size:0.84rem;color:#b3e5fc;display:flex;gap:10px;}
+
+.screen-mock{background:var(--surface2);border:1px solid #ffffff10;border-radius:var(--radius-sm);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+.mock-label{font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.mock-bar{background:var(--surface3);border-radius:6px;height:32px;display:flex;align-items:center;padding:0 12px;font-size:0.8rem;color:var(--text-dim);}
+.mock-bar.accent{background:var(--accent-dark);color:var(--accent);}
+.mock-bar.blue{background:var(--rest-bg);color:var(--rest-accent);}
+
+.nav-preview{display:flex;gap:0;background:var(--surface);border:1px solid #ffffff08;border-radius:var(--radius-sm);overflow:hidden;margin-top:10px;}
+.nav-preview-item{flex:1;padding:10px 4px;text-align:center;font-size:0.7rem;color:var(--text-muted);border-right:1px solid #ffffff08;}
+.nav-preview-item:last-child{border-right:none;}
+.nav-preview-item.active{color:var(--accent);background:#003d1f20;}
+.nav-preview-item .ni{display:block;font-size:1.2rem;margin-bottom:2px;}
+
+.pill{display:inline-block;background:var(--surface2);border:1px solid #ffffff15;border-radius:20px;padding:3px 10px;font-size:0.78rem;color:var(--text);margin:2px;}
+.pill.active{background:var(--accent);color:#000;border-color:var(--accent);}
+
+.divider{height:1px;background:#ffffff08;margin:36px 0;}
+
+.footer{text-align:center;padding:32px 24px;color:var(--text-muted);font-size:0.8rem;margin-top:40px;border-top:1px solid #ffffff08;}
+.footer strong{color:var(--text-dim);}
+
+@media(max-width:480px){
+  .hero h1{font-size:1.5rem;}
+  .container{padding:0 14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Manual oficial</div>
+  <h1>🏃 Manual del <span>Alumno</span></h1>
+  <p>Guía completa para usar GymTracker Pro y sacar el máximo provecho de tus entrenamientos</p>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <h2>Contenido</h2>
+    <ol>
+      <li><a href="#acceso">Cómo entrar a tu app</a></li>
+      <li><a href="#instalar">Instalar en tu celular</a></li>
+      <li><a href="#entrenar">Cómo entrenar con la app</a></li>
+      <li><a href="#timer">El temporizador de descanso</a></li>
+      <li><a href="#historial">Ver tu historial de pesos</a></li>
+      <li><a href="#sesion">Tu sesión se guarda automáticamente</a></li>
+      <li><a href="#preguntas">Preguntas frecuentes</a></li>
+    </ol>
+  </div>
+
+  <!-- SECCIÓN 1 -->
+  <div class="section" id="acceso">
+    <span class="section-tag">Sección 1</span>
+    <h2>Cómo entrar a tu app</h2>
+    <div class="card">
+      <h3>📲 Tu link personal</h3>
+      <p>No necesitás crear una cuenta ni recordar ninguna contraseña. Tu entrenador te mandó un <strong>link personal</strong> por WhatsApp, Instagram u otro canal. Ese link es tuyo y solo vos lo usás.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Abrí el link que te mandó tu entrenador</h4>
+            <p>Se ve algo así: <code style="font-size:0.75rem;color:var(--accent);background:#003d1f44;padding:2px 8px;border-radius:6px;">gymtracker...?c=ABC123</code></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>¡Listo! Tu app abre directamente</h4>
+            <p>Verás tu nombre y tus rutinas asignadas. No hay login, no hay contraseña.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span> La app recuerda tu sesión. La próxima vez que la abras, entrará directo a tu entrenamiento sin que tengas que abrir el link de nuevo.</div>
+    </div>
+
+    <div class="card">
+      <h3>🔗 Perdí el link, ¿qué hago?</h3>
+      <p>Simplemente avisale a tu entrenador para que te lo mande de nuevo. No perdés tu historial ni tus datos — todo está guardado en la nube.</p>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ Me aparece "Link no válido" o "Acceso desactivado"</h3>
+      <p>Puede pasar por dos razones:</p>
+      <ul>
+        <li><strong>Link no válido:</strong> El link está incompleto o fue copiado mal. Pedile uno nuevo a tu entrenador.</li>
+        <li><strong>Acceso desactivado:</strong> Tu entrenador desactivó ese link. Hablá con él para que te mande uno nuevo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 2 -->
+  <div class="section" id="instalar">
+    <span class="section-tag">Sección 2</span>
+    <h2>Instalar en tu celular</h2>
+    <p style="color:var(--text-dim);font-size:0.9rem;margin-bottom:16px;">Podés instalar GymTracker Pro como si fuera una app descargada. Así la encontrás directo en tu pantalla de inicio, sin abrir el navegador.</p>
+
+    <div class="card">
+      <h3>🤖 Android — Chrome</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><h4>Abrí tu link en Chrome</h4><p>Abrí el link que te mandó tu entrenador usando Chrome.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><h4>Tocá el menú ⋮</h4><p>Tres puntitos en la esquina superior derecha del navegador.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><h4>Tocá "Instalar aplicación"</h4><p>O "Agregar a pantalla de inicio". Confirmá y listo.</p></div>
+        </div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span> Si aparece un banner abajo de la pantalla sugiriendo instalar, también podés tocarlo directamente.</div>
+    </div>
+
+    <div class="card">
+      <h3>🍎 iPhone / iPad — Safari</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><h4>Abrí tu link en Safari</h4><p><strong>Importante:</strong> debe ser Safari, no Chrome ni otro navegador.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><h4>Tocá el botón de compartir</h4><p>El ícono de cuadrado con una flecha hacia arriba ⬆️ — está en la barra inferior de Safari.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><h4>Deslizá y tocá "Agregar a pantalla de inicio"</h4><p>Confirmá el nombre y tocá "Agregar" arriba a la derecha.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body"><h4>Abrí la app desde el ícono</h4><p>Buscá el ícono de GymTracker en tu pantalla de inicio y tocalo. Tu sesión debería estar guardada.</p></div>
+        </div>
+      </div>
+      <div class="info-box"><span>ℹ️</span> En iPhone, la primera vez que instalás la app puede aparecer la pantalla de bienvenida. Si eso pasa, tocá <strong>"Soy alumno"</strong> y pegá tu link en el campo que aparece.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 3 -->
+  <div class="section" id="entrenar">
+    <span class="section-tag">Sección 3</span>
+    <h2>Cómo entrenar con la app</h2>
+
+    <div class="card">
+      <h3>🏋️ La pantalla de entrenamiento</h3>
+      <p>Cuando entrás a la app, ves directamente tu rutina del día. La navegación tiene tres secciones:</p>
+      <div class="nav-preview">
+        <div class="nav-preview-item active"><span class="ni">🏋️</span>Entrena</div>
+        <div class="nav-preview-item"><span class="ni">📋</span>Historial</div>
+        <div class="nav-preview-item"><span class="ni">⚙️</span>Ajustes</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Cambiar de rutina</h3>
+      <p>Si tu entrenador te asignó más de una rutina (por ejemplo Día A y Día B), verás chips en la parte superior para cambiar entre ellas:</p>
+      <p style="margin-top:8px;"><span class="pill active">Día A — Empuje</span> <span class="pill">Día B — Tirón</span> <span class="pill">Día C — Piernas</span></p>
+      <p style="margin-top:8px;">Tocá el chip del día que toca entrenar.</p>
+    </div>
+
+    <div class="card">
+      <h3>✅ Registrar una serie</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Buscá el ejercicio en la pantalla</h4>
+            <p>Cada ejercicio muestra nombre, grupo muscular, series y repeticiones indicadas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Ingresá el peso que usaste</h4>
+            <p>Tocá el campo de peso y escribí los kilos. Si fue con peso corporal o sin carga, podés dejar 0 o poner el número igual.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Tocá "HECHO ✓"</h4>
+            <p>La serie se marca como completada y empieza el temporizador de descanso automáticamente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Descansá y repetí</h4>
+            <p>Cuando el temporizador termina, pasás a la siguiente serie. Repetí hasta completar todas las series del ejercicio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏆 Completar el entrenamiento</h3>
+      <p>Cuando terminás todos los ejercicios de la rutina, la app muestra una <strong>pantalla de celebración</strong> con confetti. ¡Buen trabajo! Todos tus pesos quedan guardados automáticamente.</p>
+      <div class="tip"><span class="tip-icon">💡</span> La próxima vez que hagas el mismo ejercicio, verás el peso que usaste la última vez como referencia para saber desde dónde arrancar.</div>
+    </div>
+
+    <div class="card">
+      <h3>📍 Los puntos de progreso</h3>
+      <p>En la parte superior verás puntos de colores que indican cuántos ejercicios completaste:</p>
+      <ul>
+        <li><strong>Punto gris:</strong> ejercicio pendiente</li>
+        <li><strong>Punto amarillo/naranja:</strong> ejercicio en curso</li>
+        <li><strong>Punto verde:</strong> ejercicio completado ✓</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 4 -->
+  <div class="section" id="timer">
+    <span class="section-tag">Sección 4</span>
+    <h2>El temporizador de descanso</h2>
+
+    <div class="card">
+      <h3>⏱️ Cómo funciona</h3>
+      <p>Después de completar cada serie, la app arranca automáticamente un temporizador de descanso. Los tiempos son:</p>
+      <ul>
+        <li><strong>Ejercicios compuestos</strong> (press, sentadilla, remo, peso muerto...): <strong>2 min 30 seg</strong></li>
+        <li><strong>Ejercicios aislados</strong> (curl, extensiones, elevaciones...): <strong>1 minuto</strong></li>
+      </ul>
+      <div class="info-box"><span>ℹ️</span> Estos tiempos los configuró tu entrenador según la rutina. Son los descansos recomendados para el tipo de esfuerzo de cada ejercicio.</div>
+    </div>
+
+    <div class="card">
+      <h3>📵 ¿Funciona si bloqueo el celular?</h3>
+      <p>Sí. El temporizador sigue corriendo aunque bloquees la pantalla o cambies de app. Cuando volvés a abrir GymTracker, el tiempo restante es el correcto — la app usa el reloj real del celular, no un contador interno.</p>
+      <div class="tip"><span class="tip-icon">💡</span> Podés bloquear el celular tranquilo durante el descanso. La cuenta no se va a "detener" ni "resetear".</div>
+    </div>
+
+    <div class="card">
+      <h3>⏩ Saltear el descanso</h3>
+      <p>Si querés arrancar antes de que termine el tiempo, tocá el botón <strong>SALTEAR</strong> que aparece durante el descanso. Pasarás directo a la siguiente serie.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 5 -->
+  <div class="section" id="historial">
+    <span class="section-tag">Sección 5</span>
+    <h2>Ver tu historial de pesos</h2>
+
+    <div class="card">
+      <h3>📊 Tu progreso guardado</h3>
+      <p>Tocá <strong>📋 Historial</strong> en la barra de navegación inferior. Ahí verás todos los ejercicios que registraste, con:</p>
+      <ul>
+        <li>Fecha de cada sesión</li>
+        <li>Serie y peso usado</li>
+        <li>Las últimas 30 sesiones por ejercicio</li>
+      </ul>
+      <div class="tip"><span class="tip-icon">💡</span> Usá el historial para ver si estás progresando. Si el peso sube de sesión a sesión, ¡vas por buen camino!</div>
+    </div>
+
+    <div class="card">
+      <h3>🗑️ Borrar el historial</h3>
+      <p>Si querés empezar de cero con los registros de pesos, podés hacerlo desde <strong>⚙️ Ajustes → Borrar mi historial</strong>. Esto borra solo tus registros de pesos — no borra tu cuenta ni tu rutina.</p>
+      <div class="warn-box"><span>⚠️</span> Esta acción no se puede deshacer. Una vez borrado, no podés recuperar el historial anterior.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 6 -->
+  <div class="section" id="sesion">
+    <span class="section-tag">Sección 6</span>
+    <h2>Tu sesión se guarda automáticamente</h2>
+
+    <div class="card">
+      <h3>💾 No necesitás "guardar" nada</h3>
+      <p>Cada vez que tocás <strong>HECHO ✓</strong>, el peso queda guardado en la nube al instante. Aunque cierres la app, apagues el celular o pierdas conexión por un momento, tus datos no se pierden.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔄 Cerrar la app y volver</h3>
+      <p>Si cerrás la pestaña del navegador o la app, cuando volvés a abrirla entrás <strong>directo a tu entrenamiento</strong>. La app recuerda quién sos sin que tengas que abrir el link de nuevo.</p>
+      <div class="tip"><span class="tip-icon">💡</span> Solo necesitás el link la primera vez o si cerrás sesión manualmente.</div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 Cerrar sesión</h3>
+      <p>Si querés cerrar tu sesión (por ejemplo si usás un celular compartido), andá a <strong>⚙️ Ajustes → Cerrar sesión de alumno</strong>. La próxima vez necesitarás el link de tu entrenador para volver a entrar.</p>
+      <div class="warn-box"><span>⚠️</span> Si cerrás sesión en un celular compartido, tus datos en la nube no se borran. Cuando abras el link de nuevo, todo va a estar ahí.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 7 -->
+  <div class="section" id="preguntas">
+    <span class="section-tag">Sección 7</span>
+    <h2>Preguntas frecuentes</h2>
+
+    <div class="card">
+      <h3>❓ ¿Necesito descargar algo de la tienda?</h3>
+      <p>No. GymTracker Pro es una app web (PWA). Se abre directo desde el navegador con tu link. Podés instalarla en tu pantalla de inicio sin pasar por App Store ni Play Store.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Funciona sin internet?</h3>
+      <p>La app necesita conexión para guardar tus pesos en la nube. Si perdés señal momentáneamente los datos se sincronizan cuando volvés a tener conexión. Recomendamos tener WiFi o datos móviles en el gimnasio.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Puedo usar la app en varios celulares?</h3>
+      <p>Sí. Abrí el mismo link en cualquier dispositivo. Tus datos están en la nube, así que verás el mismo historial en todos lados.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Mi entrenador puede ver mis pesos?</h3>
+      <p>Sí. Tu entrenador puede ver el historial de todos los ejercicios que registraste. Eso le permite ajustar cargas y ver tu progreso.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Qué pasa si cambio de entrenador?</h3>
+      <p>Tu nuevo entrenador te va a mandar un nuevo link personal. Los datos del link anterior no estarán en el nuevo.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Cómo sé cuántas series me faltan?</h3>
+      <p>Cada tarjeta de ejercicio muestra el progreso de series. Por ejemplo: <strong>Serie 2 de 4</strong>. Los puntos de la barra superior también te dan una vista rápida de cuántos ejercicios completaste.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Puedo anotar el peso antes de terminar la serie?</h3>
+      <p>Sí. Podés escribir el peso en el campo correspondiente antes o después de hacer la serie. Cuando tocás <strong>HECHO ✓</strong> es cuando se registra y guarda.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>GymTracker Pro</strong> · Manual del Alumno · Versión 3.0<br>
+  Para soporte contactá a tu entrenador.
+</div>
+
+</body>
+</html>

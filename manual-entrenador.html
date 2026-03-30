@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual del Entrenador — GymTracker Pro</title>
+<style>
+:root {
+  --bg:#0f1117; --surface:#1a1d27; --surface2:#22263a; --surface3:#2a2f45;
+  --accent:#00e676; --accent-dark:#003d1f;
+  --text:#eceff1; --text-dim:#78909c; --text-muted:#455a64;
+  --warn:#ffb300; --danger:#ef5350;
+  --radius:16px; --radius-sm:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;padding:0 0 60px;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.hero{background:linear-gradient(135deg,#0a1f12 0%,#1a1d27 100%);padding:48px 24px 40px;text-align:center;border-bottom:1px solid #ffffff10;}
+.hero-badge{display:inline-block;background:var(--accent-dark);color:var(--accent);font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px;}
+.hero h1{font-size:2rem;font-weight:900;margin-bottom:8px;}
+.hero h1 span{color:var(--accent);}
+.hero p{color:var(--text-dim);font-size:0.95rem;max-width:480px;margin:0 auto;}
+
+.toc{background:var(--surface);border:1px solid #ffffff10;border-radius:var(--radius);padding:20px 24px;margin:28px auto;max-width:700px;}
+.toc h2{font-size:0.8rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;}
+.toc ol{padding-left:20px;display:flex;flex-direction:column;gap:6px;}
+.toc li a{font-size:0.9rem;color:var(--text);}
+.toc li a:hover{color:var(--accent);}
+
+.container{max-width:700px;margin:0 auto;padding:0 20px;}
+
+.section{margin-top:44px;}
+.section-tag{display:inline-block;background:var(--accent-dark);color:var(--accent);font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.section h2{font-size:1.4rem;font-weight:800;margin-bottom:14px;}
+
+.card{background:var(--surface);border:1px solid #ffffff10;border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.card p{font-size:0.88rem;color:var(--text-dim);line-height:1.65;}
+.card ul,.card ol{padding-left:20px;margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+.card li{font-size:0.88rem;color:var(--text-dim);}
+.card li strong{color:var(--text);}
+
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #ffffff08;}
+.step:last-child{border-bottom:none;}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--accent-dark);color:var(--accent);font-weight:800;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body h4{font-size:0.95rem;font-weight:700;margin-bottom:4px;}
+.step-body p{font-size:0.85rem;color:var(--text-dim);}
+
+.tip{background:#1a2a1a;border:1px solid #00e67630;border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px;font-size:0.84rem;color:#a5d6a7;display:flex;gap:10px;}
+.tip-icon{flex-shrink:0;font-size:1.1rem;}
+
+.warn-box{background:#1a1500;border:1px solid #ffb30030;border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px;font-size:0.84rem;color:#ffe082;display:flex;gap:10px;}
+
+.pill{display:inline-block;background:var(--surface2);border:1px solid #ffffff15;border-radius:20px;padding:3px 10px;font-size:0.78rem;color:var(--text);margin:2px;}
+
+.divider{height:1px;background:#ffffff08;margin:36px 0;}
+
+.footer{text-align:center;padding:32px 24px;color:var(--text-muted);font-size:0.8rem;margin-top:40px;border-top:1px solid #ffffff08;}
+.footer strong{color:var(--text-dim);}
+
+@media(max-width:480px){
+  .hero h1{font-size:1.5rem;}
+  .container{padding:0 14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Manual oficial</div>
+  <h1>🧑‍💼 Manual del <span>Entrenador</span></h1>
+  <p>Todo lo que necesitás saber para gestionar tus alumnos y rutinas con GymTracker Pro</p>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <h2>Contenido</h2>
+    <ol>
+      <li><a href="#acceso">Cómo acceder al panel</a></li>
+      <li><a href="#alumnos">Agregar y gestionar alumnos</a></li>
+      <li><a href="#link">Compartir el link al alumno</a></li>
+      <li><a href="#rutinas">Crear rutinas personalizadas</a></li>
+      <li><a href="#historial">Ver historial del alumno</a></li>
+      <li><a href="#instalar">Instalar la app (PWA)</a></li>
+      <li><a href="#preguntas">Preguntas frecuentes</a></li>
+    </ol>
+  </div>
+
+  <!-- SECCIÓN 1 -->
+  <div class="section" id="acceso">
+    <span class="section-tag">Sección 1</span>
+    <h2>Cómo acceder al panel</h2>
+    <div class="card">
+      <h3>🔐 Primer ingreso</h3>
+      <p>Tu cuenta fue creada por el administrador de GymTracker Pro. Recibirás un email y contraseña temporal. Para entrar:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Abrí la app</h4>
+            <p>Entrá a <strong>gymtrackerpro.com</strong> desde tu celular o computadora.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Elegí "Soy entrenador"</h4>
+            <p>En la pantalla de bienvenida, tocá la tarjeta <strong>🧑‍💼 Soy entrenador</strong>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Ingresá tus datos</h4>
+            <p>Escribí tu email y la contraseña que te dieron. Luego tocá <strong>ENTRAR ›</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span> La próxima vez que abras la app, ya recordará tu email y podrás entrar más rápido.</div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 Cerrar sesión</h3>
+      <p>Tocá el botón <strong>Salir</strong> en la esquina superior derecha del panel. Tu sesión quedará guardada localmente para el próximo ingreso.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 2 -->
+  <div class="section" id="alumnos">
+    <span class="section-tag">Sección 2</span>
+    <h2>Agregar y gestionar alumnos</h2>
+    <div class="card">
+      <h3>➕ Agregar un alumno nuevo</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Tocá "+ AGREGAR ALUMNO"</h4>
+            <p>En la parte inferior del panel, en la pestaña <strong>👥 Alumnos</strong>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Escribí el nombre del alumno</h4>
+            <p>Usá el nombre que usarás para identificarlo. Ejemplo: <em>Lucas</em> o <em>María González</em>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Seleccioná las rutinas asignadas</h4>
+            <p>Podés elegir rutinas prediseñadas (Día A, Día B, Full Body, etc.) o rutinas propias que hayas creado. Podés asignarle más de una.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Tocá "AGREGAR"</h4>
+            <p>El alumno quedará guardado y aparecerá en tu lista con su link personal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Rutinas prediseñadas disponibles</h3>
+      <p>La app incluye estas rutinas listas para asignar:</p>
+      <ul>
+        <li><strong>Día A — Empuje:</strong> Pecho, hombros, tríceps</li>
+        <li><strong>Día B — Tirón:</strong> Espalda, bíceps</li>
+        <li><strong>Día C — Piernas:</strong> Cuádriceps, isquiotibiales, glúteos</li>
+        <li><strong>Full Body:</strong> Entrenamiento completo todo en uno</li>
+        <li><strong>Rutinas personalizadas:</strong> Las que vos creás en el constructor</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🗑️ Eliminar un alumno</h3>
+      <p>Tocá el botón <strong>Eliminar</strong> en la tarjeta del alumno. Esto <strong>bloquea su link inmediatamente</strong> en todos sus dispositivos y borra su historial. Esta acción no se puede deshacer.</p>
+      <div class="warn-box"><span>⚠️</span> Si el alumno sigue abriendo el link después de ser eliminado, verá un mensaje de "Acceso desactivado".</div>
+    </div>
+
+    <div class="card">
+      <h3>👥 Contador de alumnos activos</h3>
+      <p>En la parte superior del panel verás un badge verde con el total de alumnos activos que tenés. Ej: <span class="pill">👥 8 alumnos activos</span></p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 3 -->
+  <div class="section" id="link">
+    <span class="section-tag">Sección 3</span>
+    <h2>Compartir el link al alumno</h2>
+    <div class="card">
+      <h3>📤 Cómo enviar el link</h3>
+      <p>Cada alumno tiene un link único y personal. Para mandárselo:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Buscá al alumno en la lista</h4>
+            <p>En la pestaña <strong>👥 Alumnos</strong> de tu panel.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Tocá "Copiar link"</h4>
+            <p>El link se copia al portapapeles automáticamente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Pegalo en WhatsApp, Instagram, email, etc.</h4>
+            <p>Mandáselo por el canal que uses con tu alumno. El link se ve así:<br><code style="font-size:0.75rem;color:var(--accent);background:#003d1f44;padding:2px 8px;border-radius:6px;">gymtracker...?c=ABC123&n=Lucas...</code></p>
+          </div>
+        </div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span> El alumno solo necesita abrir ese link una vez. Después la app lo recuerda automáticamente.</div>
+    </div>
+
+    <div class="card">
+      <h3>🔁 ¿El link siempre es el mismo?</h3>
+      <p>Sí. Cada alumno tiene un código único que no cambia. Si el alumno pierde el link, simplemente copialo de nuevo desde tu panel y mandáselo otra vez.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 4 -->
+  <div class="section" id="rutinas">
+    <span class="section-tag">Sección 4</span>
+    <h2>Crear rutinas personalizadas</h2>
+    <div class="card">
+      <h3>🏗️ Constructor de rutinas</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Ir a "📋 Mis Rutinas"</h4>
+            <p>Tocá la pestaña <strong>Mis Rutinas</strong> en la parte superior del panel.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Tocá "+ NUEVA RUTINA"</h4>
+            <p>Se abre el constructor de rutinas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Ponele un nombre a la rutina</h4>
+            <p>Ejemplo: <em>"Día Funcional", "Rutina Avanzada", "Cardio + Fuerza"</em>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Agregá ejercicios desde la biblioteca</h4>
+            <p>Filtrá por grupo muscular o buscá por nombre. Tocá <strong>+</strong> para agregar cada ejercicio.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>Configurá series, reps y descanso</h4>
+            <p>En la pestaña <strong>✅ Rutina</strong> podés editar cada ejercicio: series, repeticiones y tiempo de descanso en segundos.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <h4>Guardá</h4>
+            <p>Tocá <strong>GUARDAR</strong>. La rutina quedará disponible para asignar a cualquier alumno.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 Filtros de la biblioteca</h3>
+      <p>Podés filtrar ejercicios por grupo muscular:</p>
+      <p style="margin-top:8px;">
+        <span class="pill">Todos</span><span class="pill">Pecho</span><span class="pill">Espalda</span><span class="pill">Hombros</span><span class="pill">Bíceps</span><span class="pill">Tríceps</span><span class="pill">Piernas</span><span class="pill">Glúteos</span><span class="pill">Core</span><span class="pill">Cardio</span>
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🗑️ Eliminar una rutina</h3>
+      <p>Tocá <strong>Eliminar</strong> en la tarjeta de la rutina. Los alumnos que la tengan asignada ya no podrán acceder a ella.</p>
+      <div class="warn-box"><span>⚠️</span> Si eliminás una rutina, el link del alumno dejará de mostrar ese día. Asignale otra rutina antes de eliminarla si el alumno sigue activo.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 5 -->
+  <div class="section" id="historial">
+    <span class="section-tag">Sección 5</span>
+    <h2>Ver historial del alumno</h2>
+    <div class="card">
+      <h3>📊 Cómo ver el progreso</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Buscá al alumno en tu lista</h4>
+            <p>Pestaña <strong>👥 Alumnos</strong>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Tocá "Ver historial"</h4>
+            <p>Se abre un panel con todos los registros del alumno ordenados por ejercicio.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Revisá la evolución de pesos</h4>
+            <p>Cada ejercicio muestra las últimas sesiones con fecha, series y peso usado.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span> Usá esto para ajustar cargas en la próxima sesión y para motivar al alumno mostrándole su progreso.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 6 -->
+  <div class="section" id="instalar">
+    <span class="section-tag">Sección 6</span>
+    <h2>Instalar la app (PWA)</h2>
+    <div class="card">
+      <h3>📱 Android / Chrome</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><h4>Abrí la app en Chrome</h4><p>Entrá a gymtrackerpro con tu cuenta de entrenador.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><h4>Tocá el menú (⋮)</h4><p>En la esquina superior derecha del navegador.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><h4>Tocá "Instalar aplicación" o "Agregar a pantalla de inicio"</h4><p>La app queda instalada como si fuera nativa.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🍎 iPhone / iPad (Safari)</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><h4>Abrí la app en Safari</h4><p>Chrome en iOS no permite instalar PWA.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><h4>Tocá el botón compartir</h4><p>El ícono de cuadrado con flecha hacia arriba (⬆️) en la barra inferior.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><h4>Tocá "Agregar a pantalla de inicio"</h4><p>Confirmá el nombre y tocá "Agregar".</p></div>
+        </div>
+      </div>
+      <div class="tip"><span class="tip-icon">💡</span> Una vez instalada, la app funciona sin internet en modo offline.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 7 -->
+  <div class="section" id="preguntas">
+    <span class="section-tag">Sección 7</span>
+    <h2>Preguntas frecuentes</h2>
+
+    <div class="card">
+      <h3>❓ ¿Mis alumnos necesitan crear una cuenta?</h3>
+      <p>No. Los alumnos acceden con un link personal que vos les mandás. No necesitan email, contraseña ni registro. Solo abrir el link.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Qué pasa si el alumno pierde el link?</h3>
+      <p>Copiá el link desde tu panel (botón <strong>Copiar link</strong>) y mandáselo nuevamente por WhatsApp o donde prefieras.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Puedo asignar varias rutinas al mismo alumno?</h3>
+      <p>Sí. Al crear o editar el alumno podés seleccionar múltiples rutinas. El alumno verá chips para cambiar entre ellas durante el entrenamiento.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿El alumno puede ver los pesos que registró anteriormente?</h3>
+      <p>Sí. En la sección <strong>📋 Historial</strong> de su app puede ver todos sus registros anteriores por ejercicio.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Los datos se guardan si no hay internet?</h3>
+      <p>La app guarda los datos en la nube (Firebase) en tiempo real. Si el alumno pierde conexión momentáneamente, los datos se sincronizan cuando vuelva a tener señal.</p>
+    </div>
+
+    <div class="card">
+      <h3>❓ ¿Puedo tener la app abierta en mi celular y en la computadora al mismo tiempo?</h3>
+      <p>Sí. La sesión funciona en cualquier dispositivo con el mismo email y contraseña.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>GymTracker Pro</strong> · Manual del Entrenador · Versión 3.0<br>
+  Para soporte contactá al administrador del sistema.
+</div>
+
+</body>
+</html>
