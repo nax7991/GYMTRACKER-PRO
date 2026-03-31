@@ -157,6 +157,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .hist-row:last-child{border-bottom:none;}
 .hist-row .hw{color:var(--accent);font-weight:700;font-size:0.82rem;}
 .settings-list{padding:16px 14px;display:flex;flex-direction:column;gap:8px;}
+/* ── COMMENT BOX ── */
+.comment-wrap{padding:4px 14px 12px;}
+.comment-lbl{font-size:0.62rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted);font-weight:700;margin-bottom:4px;display:block;}
+.comment-box{width:100%;background:var(--surface2);border:1px solid #ffffff15;border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;padding:8px 10px;outline:none;resize:none;min-height:54px;font-family:inherit;transition:border-color var(--trans);user-select:text;}
+.comment-box:focus{border-color:var(--accent);}
+.comment-saved{font-size:0.65rem;color:var(--accent);margin-top:3px;opacity:0;transition:opacity 0.4s;}
+.comment-saved.show{opacity:1;}
 .set-section-label{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);padding:8px 4px 2px;}
 .set-row{display:flex;align-items:center;background:var(--surface);border-radius:var(--radius-sm);border:1px solid #ffffff08;padding:14px 16px;gap:12px;cursor:pointer;transition:background var(--trans);}
 .set-row:active{background:var(--surface2);}
@@ -1284,7 +1291,7 @@ function openAlumnoHistory(code, nombre){
       Object.values(_customRoutinesCache).forEach(function(r){
         if(r.ejercicios) r.ejercicios.forEach(function(e){exLookup[e.id]=e;});
       });
-      var exWithData=allExIds.filter(function(id){return Array.isArray(data[id])&&data[id].length>0;});
+      var exWithData=allExIds.filter(function(id){return !id.startsWith('cmt_')&&Array.isArray(data[id])&&data[id].length>0;});
       if(!exWithData.length){
         scroll.innerHTML='<div class="th-empty"><div class="ei">📋</div>Sin registros todavía.</div>';
         return;
@@ -1302,6 +1309,7 @@ function openAlumnoHistory(code, nombre){
         var exName=ex?ex.nombre:exId;
         var sorted=recs.slice().sort(function(a,b){return (b.ts||0)-(a.ts||0);});
         var maxPeso=Math.max.apply(null,sorted.map(function(r){return r.peso||0;}));
+        var comment=data['cmt_'+exId]||'';
         var rows=sorted.map(function(h){
           var d=new Date(h.ts||0);
           var dateStr=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
@@ -1309,6 +1317,7 @@ function openAlumnoHistory(code, nombre){
           var isPR=(h.peso&&h.peso>=maxPeso&&h.peso>0)?'<span style="color:var(--warn);font-size:0.68rem;margin-left:4px">🏆PR</span>':'';
           return '<div class="th-ex-row"><span>'+dateStr+' · Serie '+h.serie+'</span><span class="th-peso">'+pesoStr+isPR+'</span></div>';
         }).join('');
+        if(comment) rows+='<div class="th-ex-row" style="border-top:1px solid #ffffff10;margin-top:4px;padding-top:6px;flex-direction:column;align-items:flex-start;gap:2px;"><span style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">💬 Comentario del alumno</span><span style="color:var(--text);font-style:italic;font-size:0.8rem;">'+comment+'</span></div>';
         var card=document.createElement('div');
         card.className='th-ex-card';
         card.innerHTML=
@@ -1576,6 +1585,7 @@ function saveRoutine(){
 // ── STUDENT MODE ──
 var _sc=null, _ejs=[], _est={}, _tim={};
 var _alumnoPlanes=[], _planActivo='';
+var _estPerPlan={};  // preserves exercise state per plan when switching tabs
 
 function startStudent(code,alumno){
   _sc=code;
@@ -1619,15 +1629,34 @@ function renderPlanRow(){
     return '<button class="plan-chip'+active+'" onclick="switchPlan(\''+p+'\')">'+label+'</button>';
   }).join('');
 }
-function switchPlan(plan){ if(plan===_planActivo)return; _planActivo=plan; cargarPlan(plan); }
+function switchPlan(plan){
+  if(plan===_planActivo)return;
+  // save current state before switching
+  _estPerPlan[_planActivo]=_est;
+  _planActivo=plan;
+  cargarPlan(plan);
+}
 function cargarPlan(plan){
   Object.keys(_tim).forEach(function(k){clearInterval(_tim[k]);}); _tim={};
   _ejs=getPlanEjercicios(plan);
-  renderPlanRow(); initEst(); renderWV(); updHdr();
+  // restore saved state if we've been here before, otherwise fresh start
+  if(_estPerPlan[plan]){
+    _est=_estPerPlan[plan];
+    // restart any timers that were counting down
+    Object.keys(_est).forEach(function(id){
+      if(_est[id]&&_est[id].fase==='Descansando'&&_est[id].tiempoRestante>0){
+        startTimer(id);
+      }
+    });
+  } else {
+    initEst();
+  }
+  renderPlanRow(); renderWV(); updHdr();
 }
 function initEst(){
   _est={};
   _ejs.forEach(function(e){_est[e.id]={fase:'Seleccionando',serieActual:1,seriesHechas:[],tiempoRestante:0,tiempoMax:0};});
+  _estPerPlan[_planActivo]=_est;
 }
 function goTo(view){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
@@ -1672,10 +1701,18 @@ function renderCard(id){
     body='<div class="done-body"><div class="done-icon">✅</div><div class="done-title">Ejercicio Completado!</div><div class="done-sub">'+ej.series+' series · '+(pesos.length?pesos.join(' / ')+' kg':'Sin peso registrado')+'</div></div>';
     footer='<div class="cf"><button class="btn btn-ghost" onclick="acReiniciar(\''+id+'\')">↩ Reiniciar</button></div>';
   }
+  var savedComment=(_recCache['cmt_'+id]||'');
+  var commentBlock=
+    '<div class="comment-wrap">'+
+      '<span class="comment-lbl">💬 Comentario para el entrenador</span>'+
+      '<textarea class="comment-box" id="cmt-'+id+'" rows="2" placeholder="Ej: sentí molestia en el hombro, aumenté el peso, etc." onchange="saveComment(\''+id+'\',this.value)">'+savedComment+'</textarea>'+
+      '<div class="comment-saved" id="cmtok-'+id+'">✓ Guardado</div>'+
+    '</div>';
   card.innerHTML=
     '<div class="ch"><span class="ch-icon">'+ej.icono+'</span><div class="ch-info"><div class="ch-name">'+ej.nombre+'</div><div class="ch-tags"><span class="tag">'+ej.musculo+'</span><span class="tag">'+ej.reps+' reps</span><span class="tag">'+ej.descanso+'s'+restBadge(ej)+'</span></div></div><button class="btn-demo" onclick="openVDemo(\''+ej.nombre+'\',\''+ej.musculo+'\')">🎬 Ver</button>'+badge+'</div>'+
     dots+wr+steppers+body+
     '<div class="notes-line"><span>💡</span><span>'+ej.notas+'</span></div>'+
+    commentBlock+
     footer;
   if(st.fase==='RealizandoSerie'&&lp!==null){var inp=document.getElementById('w-'+id);if(inp)inp.value=lp;}
 }
@@ -1733,6 +1770,14 @@ function acTerminar(id){
 function acSaltar(id){clearInterval(_tim[id]);var st=_est[id];st.tiempoRestante=0;st.fase='RealizandoSerie';renderCard(id);updHdr();vib(15);toast('Descanso saltado - A por la siguiente!');}
 function acReiniciar(id){clearInterval(_tim[id]);var st=_est[id];st.fase='Seleccionando';st.serieActual=1;st.seriesHechas=[];st.tiempoRestante=0;renderCard(id);updHdr();}
 function adj(id,delta){var inp=document.getElementById('w-'+id);if(!inp)return;inp.value=Math.max(0,(parseFloat(inp.value)||0)+delta);}
+function saveComment(id,text){
+  var key='cmt_'+id;
+  _recCache[key]=text;
+  var upd={}; upd[key]=text;
+  FS.collection('records').doc(_sc).set(upd,{merge:true}).catch(function(){});
+  var ok=document.getElementById('cmtok-'+id);
+  if(ok){ok.classList.add('show');setTimeout(function(){ok.classList.remove('show');},2000);}
+}
 function startTimer(id){
   clearInterval(_tim[id]);
   var st=_est[id];
